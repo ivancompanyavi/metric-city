@@ -1,5 +1,5 @@
 import Cube from './base/cube'
-import { Map, Rect, TextTile } from './base'
+import { Rect, TextTile } from './base'
 import {
   BuildingFactory,
   FireStation,
@@ -17,7 +17,6 @@ export {
   FireStation,
   Hospital,
   House,
-  Map,
   Park,
   Police,
   Rect,

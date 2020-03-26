@@ -61,7 +61,6 @@ export default class Rect extends Shape {
       )
       points[3] = new Point(x + (width * h) / 2, y - (height * h) / 2)
       if (coords) {
-        console.log('entra')
         points = points.map(
           p =>
             new Point(
