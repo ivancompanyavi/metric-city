@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Hootropolis</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <hoot-city width="30" height="15" rows="50" columns="50">
+      <hoot-layer id="map">
+        <hoot-tile-map x="0" y="0" color="red" />
+      </hoot-layer>
+      <hoot-layer id="buildings">
+        <hoot-house x="10" y="29" pct="0.4"></hoot-house>
+        <hoot-text x="15" y="29" text="hello"></hoot-text>
+        <hoot-road x="0" y="29" length="5"></hoot-road>
+        <hoot-fire-station x="18" y="8" length="5"></hoot-fire-station>
+        <hoot-hospital x="0" y="8" length="5"></hoot-hospital>
+        <hoot-park x="0" y="15" length="5"></hoot-park>
+      </hoot-layer>
+    </hoot-city>
+  </body>
+</html>
