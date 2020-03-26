@@ -164,9 +164,10 @@ template$1.innerHTML = `
   <slot></slot>
 `;
 
-class City extends HTMLDivElement {
+class City extends HTMLElement {
   constructor() {
     super();
+    console.log('bu');
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.appendChild(template$1.content.cloneNode(true));
     this.addListeners();
@@ -190,6 +191,7 @@ class City extends HTMLDivElement {
 
   addListeners() {
     this.addEventListener('click', evt => {
+      console.log('hola');
       this.querySelectorAll('hoot-layer').forEach(layer => {
         layer.dispatchEvent(
           new CustomEvent('city-click', {
@@ -201,7 +203,7 @@ class City extends HTMLDivElement {
   }
 }
 
-customElements.define('hoot-city', City, { extends: 'div' });
+customElements.define('hoot-city', City);
 
 class LayerElement extends CityElement {
   constructor() {
@@ -884,6 +886,7 @@ customElements.define('hoot-tile-map', HootTileMap);
 
 class HootHouse extends LayerElement {
   getData() {
+    console.log('casa');
     return {
       pct: this.getAttr('pct', 0.0),
       w: this.getAttr('w', 4),
