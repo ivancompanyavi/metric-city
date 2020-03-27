@@ -11,7 +11,19 @@ export class DrawableElement {
 }
 
 export function getMousePosition(evt) {
-  const canvas = evt.target
-  const rect = canvas.getBoundingClientRect()
-  return { x: evt.clientX - rect.left, y: evt.clientY - rect.top }
+  return { x: evt.pageX, y: evt.pageY }
 }
+
+class LayerCounter {
+  constructor() {
+    this.counter = 1
+  }
+
+  getCount() {
+    return this.counter++
+  }
+}
+
+const layerCounter = new LayerCounter()
+
+export { layerCounter }

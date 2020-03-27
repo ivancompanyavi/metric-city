@@ -14,6 +14,7 @@ export default class House extends Building {
       ...new Dimension3D(w, tall, h),
       color,
       point,
+      strokeColor: color,
     })
   }
 

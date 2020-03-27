@@ -4,7 +4,6 @@ import { getRandomColor } from '../../../common/engine/utils'
 
 export default class HootHouse extends LayerElement {
   getData() {
-    console.log('casa')
     return {
       pct: this.getAttr('pct', 0.0),
       w: this.getAttr('w', 4),

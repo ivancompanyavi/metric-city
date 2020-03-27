@@ -3,12 +3,16 @@ import { Rect, Cube, Point, Dimension3D, Dimension2D } from '../base'
 import Building from './building'
 
 export default class Hospital extends Building {
-  draw() {
-    this._drawSecondBlock()
-    this._drawFirstBlock()
+  drawHitGraph(data) {
+    this.draw({ ...data, strokeColor: data.color })
   }
 
-  _drawFirstBlock() {
+  draw(data) {
+    this._drawSecondBlock(data)
+    this._drawFirstBlock(data)
+  }
+
+  _drawFirstBlock({ color, strokeColor }) {
     let tempPoint
     const { ctx, width, height, point: p } = this
     const point = new Point(this.point.x, this.point.y)
@@ -17,22 +21,26 @@ export default class Hospital extends Building {
     // Walls
     tempPoint = cube.draw({
       ...new Dimension3D(5, 7, 5),
-      color: this.getColor('#B9B5AC', true),
+      color: this.getColor(color || '#B9B5AC', true),
+      strokeColor,
       point,
     })
     tempPoint = cube.draw({
       ...new Dimension3D(5, 1, 5),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     })
     tempPoint = cube.draw({
       ...new Dimension3D(5, 1, 5),
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point: tempPoint[2][0],
     })
     cube.draw({
       ...new Dimension3D(5, 4, 5),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     })
 
@@ -47,14 +55,16 @@ export default class Hospital extends Building {
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'x',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point,
         coords: w,
       })
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'y',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point,
         coords: w,
       })
@@ -64,21 +74,23 @@ export default class Hospital extends Building {
     rect.draw({
       ...new Dimension2D(1, 3),
       axis: 'x',
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point,
       coords: new Point(2, 10),
     })
     rect.draw({
       ...new Dimension2D(3, 1),
       axis: 'x',
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point,
       coords: new Point(1, 11),
     })
     // Now we draw the cross
   }
 
-  _drawSecondBlock() {
+  _drawSecondBlock({ color, strokeColor }) {
     let tempPoint
     const { ctx, width, height, point } = this
     const cube = new Cube({ ctx, width, height, point })
@@ -90,29 +102,34 @@ export default class Hospital extends Building {
     // Walls
     tempPoint = cube.draw({
       ...new Dimension3D(9, 7, 7),
-      color: this.getColor('#B9B5AC', true),
+      color: this.getColor(color || '#B9B5AC', true),
+      strokeColor,
       point: firstPoint,
     })
     tempPoint = cube.draw({
       ...new Dimension3D(9, 1, 7),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     })
     tempPoint = cube.draw({
       ...new Dimension3D(9, 1, 7),
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point: tempPoint[2][0],
     })
     tempPoint = cube.draw({
       ...new Dimension3D(9, 4, 7),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     })
     // Door
     rect.draw({
       ...new Dimension2D(3, 3),
       axis: 'x',
-      color: this.getColor('blue'),
+      color: this.getColor(color || 'blue'),
+      strokeColor,
       point: firstPoint,
       coords: new Point(3, 0),
     })
@@ -129,7 +146,8 @@ export default class Hospital extends Building {
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'x',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point: firstPoint,
         coords: w,
       })

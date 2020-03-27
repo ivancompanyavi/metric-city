@@ -14,10 +14,9 @@ template.innerHTML = `
 export default class City extends HTMLElement {
   constructor() {
     super()
-    console.log('bu')
     this.shadow = this.attachShadow({ mode: 'open' })
     this.shadow.appendChild(template.content.cloneNode(true))
-    this.addListeners()
+    this.initListeners()
   }
 
   get width() {
@@ -36,17 +35,30 @@ export default class City extends HTMLElement {
     return this.getAttribute('offset')
   }
 
-  addListeners() {
+  initListeners() {
     this.addEventListener('click', evt => {
-      console.log('hola')
-      this.querySelectorAll('hoot-layer').forEach(layer => {
-        layer.dispatchEvent(
-          new CustomEvent('city-click', {
-            detail: evt,
-          }),
-        )
+      const layers = this.querySelectorAll('hoot-layer')
+      layers.forEach(layer => {
+        layer.dispatchEvent(new CustomEvent('city-click', { detail: evt }))
       })
     })
+    let layerEventBuffer = []
+    this.addEventListener('city-element-clicked', evt => {
+      const layers = this.querySelectorAll('hoot-layer')
+      layerEventBuffer.push(evt.detail)
+      if (layerEventBuffer.length === layers.length) {
+        console.log(this.processLayerEvents(layerEventBuffer))
+        layerEventBuffer = []
+      }
+    })
+  }
+
+  processLayerEvents(events) {
+    events.sort((a, b) => b.layerId - a.layerId)
+    const filteredEvents = events.filter(e => e.element)
+    if (filteredEvents.length) {
+      return filteredEvents[0]
+    }
   }
 }
 

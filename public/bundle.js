@@ -68,10 +68,20 @@ class DrawableElement {
 }
 
 function getMousePosition(evt) {
-  const canvas = evt.target;
-  const rect = canvas.getBoundingClientRect();
-  return { x: evt.clientX - rect.left, y: evt.clientY - rect.top }
+  return { x: evt.pageX, y: evt.pageY }
 }
+
+class LayerCounter {
+  constructor() {
+    this.counter = 1;
+  }
+
+  getCount() {
+    return this.counter++
+  }
+}
+
+const layerCounter = new LayerCounter();
 
 const template = `
   <style>
@@ -93,12 +103,12 @@ const template = `
 class Layer extends CityElement {
   constructor() {
     super();
-
+    this.layerId = layerCounter.getCount();
     this.elements = [];
     const tpl = this.initTemplate();
     const _hitGraph = tpl.content.getElementById('hitgraph');
     this._hitCtx = _hitGraph.getContext('2d');
-    // this._hitCtx = tpl.content.querySelector('canvas').getContext('2d')
+    this._hitCtx = tpl.content.querySelector('canvas').getContext('2d');
     this.initHitGraph(tpl);
     this.initCanvas(tpl);
     this.initShadow(tpl);
@@ -135,7 +145,15 @@ class Layer extends CityElement {
       const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
         pixel[1],
       )}${this.componentToHex(pixel[2])}`;
-      console.log(this.getClickedElement(color));
+      const element = this.getClickedElement(color);
+      this.city.dispatchEvent(
+        new CustomEvent('city-element-clicked', {
+          detail: {
+            element,
+            layerId: this.layerId,
+          },
+        }),
+      );
     });
   }
 
@@ -167,10 +185,9 @@ template$1.innerHTML = `
 class City extends HTMLElement {
   constructor() {
     super();
-    console.log('bu');
     this.shadow = this.attachShadow({ mode: 'open' });
     this.shadow.appendChild(template$1.content.cloneNode(true));
-    this.addListeners();
+    this.initListeners();
   }
 
   get width() {
@@ -189,17 +206,30 @@ class City extends HTMLElement {
     return this.getAttribute('offset')
   }
 
-  addListeners() {
+  initListeners() {
     this.addEventListener('click', evt => {
-      console.log('hola');
-      this.querySelectorAll('hoot-layer').forEach(layer => {
-        layer.dispatchEvent(
-          new CustomEvent('city-click', {
-            detail: evt,
-          }),
-        );
+      const layers = this.querySelectorAll('hoot-layer');
+      layers.forEach(layer => {
+        layer.dispatchEvent(new CustomEvent('city-click', { detail: evt }));
       });
     });
+    let layerEventBuffer = [];
+    this.addEventListener('city-element-clicked', evt => {
+      const layers = this.querySelectorAll('hoot-layer');
+      layerEventBuffer.push(evt.detail);
+      if (layerEventBuffer.length === layers.length) {
+        console.log(this.processLayerEvents(layerEventBuffer));
+        layerEventBuffer = [];
+      }
+    });
+  }
+
+  processLayerEvents(events) {
+    events.sort((a, b) => b.layerId - a.layerId);
+    const filteredEvents = events.filter(e => e.element);
+    if (filteredEvents.length) {
+      return filteredEvents[0]
+    }
   }
 }
 
@@ -439,18 +469,20 @@ class Dimension3D {
 }
 
 class Cube extends Shape {
-  draw({ w, h, d, color = '#000000', point = this.point }) {
+  draw({ w, h, d, strokeColor, color = '#000000', point = this.point }) {
     const { ctx, width, height } = this;
     const rect = new Rect({ ctx, width, height, point });
     const side1 = rect.draw({
       ...new Dimension2D(w, h),
       axis: 'x',
       color: this.getColor(color),
+      strokeColor,
     });
     const side2 = rect.draw({
       ...new Dimension2D(d, h),
       axis: 'y',
       color: this.getColor(color),
+      strokeColor,
     });
     // Modify the point to render for the topside rect
     rect.point = {
@@ -461,6 +493,7 @@ class Cube extends Shape {
       ...new Dimension2D(d, w),
       axis: 'z',
       color: this.getColor(color),
+      strokeColor,
     });
     return [side1, side2, side3]
   }
@@ -521,11 +554,15 @@ class Building extends Shape {
 }
 
 class FireStation extends Building {
-  draw() {
-    this._drawFirstBlock();
+  drawHitGraph(data) {
+    this.draw({ ...data, strokeColor: data.color });
   }
 
-  _drawFirstBlock() {
+  draw(data) {
+    this._drawFirstBlock(data);
+  }
+
+  _drawFirstBlock({ color, strokeColor }) {
     const { ctx, width, height, point } = this;
 
     const cube = new Cube({ ctx, width, height, point });
@@ -535,14 +572,16 @@ class FireStation extends Building {
       w: 8,
       h: 6,
       d: 7,
-      color: this.getColor('#D5251F', true),
+      color: this.getColor(color || '#D5251F', true),
+      strokeColor,
       point,
     });
     cube.draw({
       w: 8,
       h: 1,
       d: 7,
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point: tempPoint[2][0],
     });
 
@@ -551,7 +590,8 @@ class FireStation extends Building {
       w: 3,
       h: 4,
       axis: 'x',
-      color: this.getColor('#7CA1D2'),
+      color: this.getColor(color || '#7CA1D2'),
+      strokeColor,
       point,
       coords: { x: 4, y: 1 },
     });
@@ -559,7 +599,8 @@ class FireStation extends Building {
       w: 2,
       h: 3,
       axis: 'y',
-      color: this.getColor('#7CA1D2'),
+      color: this.getColor(color || '#7CA1D2'),
+      strokeColor,
       point,
       coords: { x: 1, y: 1 },
     });
@@ -567,7 +608,8 @@ class FireStation extends Building {
       w: 2,
       h: 3,
       axis: 'y',
-      color: this.getColor('#7CA1D2'),
+      color: this.getColor(color || '#7CA1D2'),
+      strokeColor,
       point,
       coords: { x: 4, y: 1 },
     });
@@ -577,7 +619,8 @@ class FireStation extends Building {
       w: 2,
       h: 3,
       axis: 'x',
-      color: this.getColor('#7CA1D2'),
+      color: this.getColor(color || '#7CA1D2'),
+      strokeColor,
       point,
       coords: { x: 1, y: 0 },
     });
@@ -585,12 +628,16 @@ class FireStation extends Building {
 }
 
 class Hospital extends Building {
-  draw() {
-    this._drawSecondBlock();
-    this._drawFirstBlock();
+  drawHitGraph(data) {
+    this.draw({ ...data, strokeColor: data.color });
   }
 
-  _drawFirstBlock() {
+  draw(data) {
+    this._drawSecondBlock(data);
+    this._drawFirstBlock(data);
+  }
+
+  _drawFirstBlock({ color, strokeColor }) {
     let tempPoint;
     const { ctx, width, height, point: p } = this;
     const point = new Point(this.point.x, this.point.y);
@@ -599,22 +646,26 @@ class Hospital extends Building {
     // Walls
     tempPoint = cube.draw({
       ...new Dimension3D(5, 7, 5),
-      color: this.getColor('#B9B5AC', true),
+      color: this.getColor(color || '#B9B5AC', true),
+      strokeColor,
       point,
     });
     tempPoint = cube.draw({
       ...new Dimension3D(5, 1, 5),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     });
     tempPoint = cube.draw({
       ...new Dimension3D(5, 1, 5),
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point: tempPoint[2][0],
     });
     cube.draw({
       ...new Dimension3D(5, 4, 5),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     });
 
@@ -629,14 +680,16 @@ class Hospital extends Building {
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'x',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point,
         coords: w,
       });
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'y',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point,
         coords: w,
       });
@@ -646,21 +699,23 @@ class Hospital extends Building {
     rect.draw({
       ...new Dimension2D(1, 3),
       axis: 'x',
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point,
       coords: new Point(2, 10),
     });
     rect.draw({
       ...new Dimension2D(3, 1),
       axis: 'x',
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point,
       coords: new Point(1, 11),
     });
     // Now we draw the cross
   }
 
-  _drawSecondBlock() {
+  _drawSecondBlock({ color, strokeColor }) {
     let tempPoint;
     const { ctx, width, height, point } = this;
     const cube = new Cube({ ctx, width, height, point });
@@ -672,29 +727,34 @@ class Hospital extends Building {
     // Walls
     tempPoint = cube.draw({
       ...new Dimension3D(9, 7, 7),
-      color: this.getColor('#B9B5AC', true),
+      color: this.getColor(color || '#B9B5AC', true),
+      strokeColor,
       point: firstPoint,
     });
     tempPoint = cube.draw({
       ...new Dimension3D(9, 1, 7),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     });
     tempPoint = cube.draw({
       ...new Dimension3D(9, 1, 7),
-      color: this.getColor('#FFFFFF'),
+      color: this.getColor(color || '#FFFFFF'),
+      strokeColor,
       point: tempPoint[2][0],
     });
     tempPoint = cube.draw({
       ...new Dimension3D(9, 4, 7),
-      color: this.getColor('#81645E', true),
+      color: this.getColor(color || '#81645E', true),
+      strokeColor,
       point: tempPoint[2][0],
     });
     // Door
     rect.draw({
       ...new Dimension2D(3, 3),
       axis: 'x',
-      color: this.getColor('blue'),
+      color: this.getColor(color || 'blue'),
+      strokeColor,
       point: firstPoint,
       coords: new Point(3, 0),
     });
@@ -711,7 +771,8 @@ class Hospital extends Building {
       rect.draw({
         ...new Dimension2D(1, 2),
         axis: 'x',
-        color: this.getColor('#FFFFFF'),
+        color: this.getColor(color || '#FFFFFF'),
+        strokeColor,
         point: firstPoint,
         coords: w,
       });
@@ -732,6 +793,7 @@ class House extends Building {
       ...new Dimension3D(w, tall, h),
       color,
       point,
+      strokeColor: color,
     })
   }
 
@@ -790,18 +852,22 @@ class House extends Building {
 const COLOR = '#7cfc00';
 
 class Park extends Building {
-  draw({ w, h }) {
-    this._drawFloor(w, h);
+  drawHitGraph(data) {
+    this.draw({ ...data, strokeColor: data.color });
+  }
+  draw(data) {
+    this._drawFloor(data);
   }
 
-  _drawFloor(w, h) {
+  _drawFloor({ w, h, color = COLOR, strokeColor }) {
     const { ctx, width, height, point: p } = this;
     const point = new Point(p.x, p.y);
     const cube = new Cube({ ctx, width, height, point: p });
     // Walls
     return cube.draw({
       ...new Dimension3D(w, 0, h),
-      color: this.getColor(`${COLOR}`, true),
+      color: this.getColor(`${color}`, true),
+      strokeColor,
       point,
     })
   }
@@ -849,12 +915,12 @@ class Road extends Shape {
 
 class TileMap extends Building {
   drawHitGraph(data) {
-    this.draw(data);
+    this.draw({ ...data, strokeColor: data.color });
   }
   draw(data) {
     const { ctx, width, height, point } = this;
-    const { color, rows, columns } = data;
-    const d = { w: 1, h: 1, axis: 'z', color };
+    const { color, rows, columns, strokeColor } = data;
+    const d = { w: 1, h: 1, axis: 'z', color, strokeColor };
     const rect = new Rect({ ctx, width, height, point });
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < columns; j++) {
@@ -886,7 +952,6 @@ customElements.define('hoot-tile-map', HootTileMap);
 
 class HootHouse extends LayerElement {
   getData() {
-    console.log('casa');
     return {
       pct: this.getAttr('pct', 0.0),
       w: this.getAttr('w', 4),

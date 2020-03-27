@@ -1,5 +1,5 @@
 import CityElement from './cityElement'
-import { getMousePosition } from '../models'
+import { getMousePosition, layerCounter } from '../models'
 
 const template = `
   <style>
@@ -21,12 +21,12 @@ const template = `
 export default class Layer extends CityElement {
   constructor() {
     super()
-
+    this.layerId = layerCounter.getCount()
     this.elements = []
     const tpl = this.initTemplate()
     const _hitGraph = tpl.content.getElementById('hitgraph')
     this._hitCtx = _hitGraph.getContext('2d')
-    // this._hitCtx = tpl.content.querySelector('canvas').getContext('2d')
+    this._hitCtx = tpl.content.querySelector('canvas').getContext('2d')
     this.initHitGraph(tpl)
     this.initCanvas(tpl)
     this.initShadow(tpl)
@@ -63,7 +63,15 @@ export default class Layer extends CityElement {
       const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
         pixel[1],
       )}${this.componentToHex(pixel[2])}`
-      console.log(this.getClickedElement(color))
+      const element = this.getClickedElement(color)
+      this.city.dispatchEvent(
+        new CustomEvent('city-element-clicked', {
+          detail: {
+            element,
+            layerId: this.layerId,
+          },
+        }),
+      )
     })
   }
 

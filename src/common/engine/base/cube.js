@@ -3,18 +3,20 @@ import Rect from './rect'
 import { Dimension2D } from './dimension'
 
 export default class Cube extends Shape {
-  draw({ w, h, d, color = '#000000', point = this.point }) {
+  draw({ w, h, d, strokeColor, color = '#000000', point = this.point }) {
     const { ctx, width, height } = this
     const rect = new Rect({ ctx, width, height, point })
     const side1 = rect.draw({
       ...new Dimension2D(w, h),
       axis: 'x',
       color: this.getColor(color),
+      strokeColor,
     })
     const side2 = rect.draw({
       ...new Dimension2D(d, h),
       axis: 'y',
       color: this.getColor(color),
+      strokeColor,
     })
     // Modify the point to render for the topside rect
     rect.point = {
@@ -25,6 +27,7 @@ export default class Cube extends Shape {
       ...new Dimension2D(d, w),
       axis: 'z',
       color: this.getColor(color),
+      strokeColor,
     })
     return [side1, side2, side3]
   }
