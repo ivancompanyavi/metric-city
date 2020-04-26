@@ -108,7 +108,6 @@ class Layer extends CityElement {
     const tpl = this.initTemplate();
     const _hitGraph = tpl.content.getElementById('hitgraph');
     this._hitCtx = _hitGraph.getContext('2d');
-    this._hitCtx = tpl.content.querySelector('canvas').getContext('2d');
     this.initHitGraph(tpl);
     this.initCanvas(tpl);
     this.initShadow(tpl);
@@ -897,15 +896,18 @@ class Road extends Shape {
         axis: 'z',
         color: this.getColor('#ffffff'),
         coords: {
-          x: direction === 'left' ? i : -i,
-          y: direction === 'left' ? 0 : i,
+          x: direction === 'left' ? 0 : i,
+          y: direction === 'left' ? -i : 0,
         },
         point: {
           x:
             direction === 'left'
-              ? this.point.x + height / 2
-              : this.point.x - height,
-          y: this.point.y,
+              ? this.point.x - width / 2
+              : this.point.x + width / 2,
+          y:
+            direction === 'left'
+              ? this.point.y - height / 2
+              : this.point.y - height / 2,
         },
       });
     }
@@ -1042,3 +1044,114 @@ class HootPark extends LayerElement {
 }
 
 customElements.define('hoot-park', HootPark);
+
+const template$2 = /*html*/ `
+<style>
+  hoot-nav {
+    grid-area: nav;
+    background-color: var(--color-grey);
+  }
+  nav {
+    
+    border-bottom: 1px solid black;
+    height: 100%;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style-type: none;
+    height: 80px;
+    text-align: center;
+  }
+
+  li:hover {
+    cursor: pointer;
+  }
+
+  li:hover i {
+    color: var(--color-white);
+  }
+
+  a {
+    display: flex;
+    flex-align: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--color-grey-lighter);
+  }
+
+  a:hover {
+    font-weight: bold;
+  }
+
+  a[selected=true] {
+    background-color: var(--color-grey-lighter);
+    color: var(--color-white);
+  }
+
+  a[selected=true] i {
+    color: var(--color-white);
+  }
+  i {
+    color: var(--color-grey-lighter);
+    margin-bottom: 10px;
+  }
+
+</style>
+<nav>
+<ul>
+    <li>
+      <a href="/index.html">
+        <i class="material-icons">map</i>
+        view
+      </a>
+    </li>
+    <li>
+      <a href="/edit.html">
+        <i class="material-icons">edit</i>
+        edit
+      </a>
+    </li>
+</ul>
+</nav>
+`;
+class Nav extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = template$2;
+    this.selectLink();
+  }
+
+  selectLink() {
+    const url = new URL(window.location.href);
+    this.querySelectorAll('a').forEach(link => {
+      if (link.getAttribute('href') === url.pathname) {
+        link.setAttribute('selected', true);
+      }
+    });
+  }
+}
+
+customElements.define('hoot-nav', Nav);
+
+const template$3 = `
+<style>
+hoot-content {
+    grid-area: content;
+}
+</style>
+`;
+
+class Content extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = template$3;
+  }
+}
+
+customElements.define('hoot-content', Content);

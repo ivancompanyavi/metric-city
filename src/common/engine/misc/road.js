@@ -24,15 +24,18 @@ export default class Road extends Shape {
         axis: 'z',
         color: this.getColor('#ffffff'),
         coords: {
-          x: direction === 'left' ? i : -i,
-          y: direction === 'left' ? 0 : i,
+          x: direction === 'left' ? 0 : i,
+          y: direction === 'left' ? -i : 0,
         },
         point: {
           x:
             direction === 'left'
-              ? this.point.x + height / 2
-              : this.point.x - height,
-          y: this.point.y,
+              ? this.point.x - width / 2
+              : this.point.x + width / 2,
+          y:
+            direction === 'left'
+              ? this.point.y - height / 2
+              : this.point.y - height / 2,
         },
       })
     }

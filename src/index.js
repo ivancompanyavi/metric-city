@@ -1,2 +1,3 @@
 import './components'
-import css from './App.css'
+import './normalize.css'
+import './App.css'

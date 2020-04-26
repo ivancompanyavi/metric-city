@@ -15,6 +15,6 @@ module.exports = {
     resolve(),
     css({ output: 'public/bundle.css' }),
     devEnv && serve('public'),
-    devEnv && livereload(),
+    devEnv && livereload('public'),
   ],
 }

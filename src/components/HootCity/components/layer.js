@@ -26,7 +26,6 @@ export default class Layer extends CityElement {
     const tpl = this.initTemplate()
     const _hitGraph = tpl.content.getElementById('hitgraph')
     this._hitCtx = _hitGraph.getContext('2d')
-    this._hitCtx = tpl.content.querySelector('canvas').getContext('2d')
     this.initHitGraph(tpl)
     this.initCanvas(tpl)
     this.initShadow(tpl)
