@@ -1,12 +1,11 @@
 import CityElement from './cityElement'
 import { getMousePosition, layerCounter } from '../models'
 
+const SIDEBAR_WIDTH = 100
+const HEADER_HEIGHT = 60
+
 const template = `
   <style>
-    :host {
-      width: 100%;
-      height: 100%;
-    }
     canvas {
       position: absolute;
     }
@@ -57,24 +56,31 @@ export default class Layer extends CityElement {
 
   initListeners() {
     this.addEventListener('city-click', evt => {
-      const point = getMousePosition(evt.detail)
-      const pixel = this._hitCtx.getImageData(point.x, point.y, 1, 1).data
-      const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
-        pixel[1],
-      )}${this.componentToHex(pixel[2])}`
-      const element = this.getClickedElement(color)
-      this.city.dispatchEvent(
-        new CustomEvent('city-element-clicked', {
-          detail: {
-            element,
-            layerId: this.layerId,
-          },
-        }),
-      )
+      const element = this.getClickedElement(evt)
+      const event = new CustomEvent('city-element-clicked', {
+        detail: {
+          element,
+          layerId: this.layerId,
+        },
+      })
+      this.city.dispatchEvent(event)
+      if (this.configBar) {
+        this.configBar.dispatchEvent(event)
+      }
     })
   }
 
-  getClickedElement(color) {
+  getClickedElement(evt) {
+    const point = getMousePosition(evt.detail)
+    const pixel = this._hitCtx.getImageData(
+      point.x - SIDEBAR_WIDTH,
+      point.y - HEADER_HEIGHT,
+      1,
+      1,
+    ).data
+    const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
+      pixel[1],
+    )}${this.componentToHex(pixel[2])}`
     return this.elements.find(e => e.data.color === color.toUpperCase())
   }
 

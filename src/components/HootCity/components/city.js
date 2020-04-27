@@ -22,15 +22,35 @@ export default class City extends HTMLElement {
   get width() {
     return this.getAttribute('width')
   }
+
+  set width(newValue) {
+    this.setAttribute('width', newValue)
+  }
+
   get height() {
     return this.getAttribute('height')
   }
+
+  set height(newValue) {
+    this.setAttribute('height', newValue)
+  }
+
   get rows() {
     return this.getAttribute('rows')
   }
+
+  set rows(newValue) {
+    this.setAttribute('rows', newValue)
+  }
+
   get columns() {
     return this.getAttribute('columns')
   }
+
+  set columns(newValue) {
+    this.setAttribute('columns', newValue)
+  }
+
   get offset() {
     return this.getAttribute('offset')
   }
@@ -59,6 +79,14 @@ export default class City extends HTMLElement {
     if (filteredEvents.length) {
       return filteredEvents[0]
     }
+  }
+
+  static get observedAttributes() {
+    return ['width', 'height']
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log(`${name}: from ${oldValue} to ${newValue}`)
   }
 }
 

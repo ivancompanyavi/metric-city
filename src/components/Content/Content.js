@@ -1,14 +1,20 @@
-const template = `
+const template = /*html*/ `
 <style>
-hoot-content {
+  * {
+    color: var(--color-white);
+  }
+:host {
     grid-area: content;
+    position: relative;
 }
 </style>
+<slot></slot>
 `
 
 class Content extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = template
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = template
   }
 }
 

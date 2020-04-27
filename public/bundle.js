@@ -4,6 +4,7 @@ class CityElement extends HTMLElement {
   constructor() {
     super();
     this._city = null;
+    this._configBar = null;
   }
 
   getAttr(key, defaultValue) {
@@ -19,6 +20,13 @@ class CityElement extends HTMLElement {
       this._city = document.querySelector('hoot-city');
     }
     return this._city
+  }
+
+  get configBar() {
+    if (!this._configBar) {
+      this._configBar = document.querySelector('hoot-config-bar');
+    }
+    return this._configBar
   }
 
   get width() {
@@ -83,12 +91,11 @@ class LayerCounter {
 
 const layerCounter = new LayerCounter();
 
+const SIDEBAR_WIDTH = 100;
+const HEADER_HEIGHT = 60;
+
 const template = `
   <style>
-    :host {
-      width: 100%;
-      height: 100%;
-    }
     canvas {
       position: absolute;
     }
@@ -139,24 +146,31 @@ class Layer extends CityElement {
 
   initListeners() {
     this.addEventListener('city-click', evt => {
-      const point = getMousePosition(evt.detail);
-      const pixel = this._hitCtx.getImageData(point.x, point.y, 1, 1).data;
-      const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
-        pixel[1],
-      )}${this.componentToHex(pixel[2])}`;
-      const element = this.getClickedElement(color);
-      this.city.dispatchEvent(
-        new CustomEvent('city-element-clicked', {
-          detail: {
-            element,
-            layerId: this.layerId,
-          },
-        }),
-      );
+      const element = this.getClickedElement(evt);
+      const event = new CustomEvent('city-element-clicked', {
+        detail: {
+          element,
+          layerId: this.layerId,
+        },
+      });
+      this.city.dispatchEvent(event);
+      if (this.configBar) {
+        this.configBar.dispatchEvent(event);
+      }
     });
   }
 
-  getClickedElement(color) {
+  getClickedElement(evt) {
+    const point = getMousePosition(evt.detail);
+    const pixel = this._hitCtx.getImageData(
+      point.x - SIDEBAR_WIDTH,
+      point.y - HEADER_HEIGHT,
+      1,
+      1,
+    ).data;
+    const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
+      pixel[1],
+    )}${this.componentToHex(pixel[2])}`;
     return this.elements.find(e => e.data.color === color.toUpperCase())
   }
 
@@ -192,15 +206,35 @@ class City extends HTMLElement {
   get width() {
     return this.getAttribute('width')
   }
+
+  set width(newValue) {
+    this.setAttribute('width', newValue);
+  }
+
   get height() {
     return this.getAttribute('height')
   }
+
+  set height(newValue) {
+    this.setAttribute('height', newValue);
+  }
+
   get rows() {
     return this.getAttribute('rows')
   }
+
+  set rows(newValue) {
+    this.setAttribute('rows', newValue);
+  }
+
   get columns() {
     return this.getAttribute('columns')
   }
+
+  set columns(newValue) {
+    this.setAttribute('columns', newValue);
+  }
+
   get offset() {
     return this.getAttribute('offset')
   }
@@ -229,6 +263,14 @@ class City extends HTMLElement {
     if (filteredEvents.length) {
       return filteredEvents[0]
     }
+  }
+
+  static get observedAttributes() {
+    return ['width', 'height']
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log(`${name}: from ${oldValue} to ${newValue}`);
   }
 }
 
@@ -1140,18 +1182,39 @@ class Nav extends HTMLElement {
 
 customElements.define('hoot-nav', Nav);
 
-const template$3 = `
+const template$3 = /*html*/ `
 <style>
-hoot-content {
+  * {
+    color: var(--color-white);
+  }
+:host {
     grid-area: content;
+    position: relative;
 }
 </style>
+<slot></slot>
 `;
 
 class Content extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = template$3;
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = template$3;
   }
 }
 
 customElements.define('hoot-content', Content);
+
+class ConfigBar extends CityElement {
+  constructor() {
+    super();
+    this.initListeners();
+  }
+
+  initListeners() {
+    this.addEventListener('city-element-clicked', evt => {
+      this.city.width = 20;
+    });
+  }
+}
+
+customElements.define('hoot-config-bar', ConfigBar);

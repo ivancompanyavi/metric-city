@@ -2,6 +2,7 @@ export default class CityElement extends HTMLElement {
   constructor() {
     super()
     this._city = null
+    this._configBar = null
   }
 
   getAttr(key, defaultValue) {
@@ -17,6 +18,13 @@ export default class CityElement extends HTMLElement {
       this._city = document.querySelector('hoot-city')
     }
     return this._city
+  }
+
+  get configBar() {
+    if (!this._configBar) {
+      this._configBar = document.querySelector('hoot-config-bar')
+    }
+    return this._configBar
   }
 
   get width() {
