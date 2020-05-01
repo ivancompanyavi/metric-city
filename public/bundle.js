@@ -345,13 +345,7 @@ class LayerElement extends CityElement {
       this._ctx = null;
       this._hitCtx = null;
       this._elements = null;
-      const drawable = new DrawableElement(
-        this.ctx,
-        { x: this.x, y: this.y },
-        this.getShape(),
-        this.getData(),
-      );
-      this.draw(drawable);
+      this.draw(this.getDrawable());
     });
   }
 
@@ -392,14 +386,17 @@ class LayerElement extends CityElement {
     return {}
   }
 
-  connectedCallback() {
-    const drawable = new DrawableElement(
+  getDrawable() {
+    return new DrawableElement(
       this.ctx,
       { x: this.x, y: this.y },
       this.getShape(),
       this.getData(),
-    );
-    this.draw(drawable);
+    )
+  }
+
+  connectedCallback() {
+    this.draw(this.getDrawable());
   }
 }
 
@@ -1227,7 +1224,22 @@ class Content extends HTMLElement {
 
 customElements.define('hoot-content', Content);
 
-class ConfigBar extends CityElement {
+const template$4 = /*html*/ `
+  <style>
+    hoot-config-bar {
+      position: absolute;
+      right: 0;
+      height: 100%;
+      width: 350px;
+      background: blue;
+    }
+  </style>
+  <aside>
+
+  </aside>
+`;
+
+class ConfigBar extends HTMLElement {
   constructor() {
     super();
     this.initListeners();
@@ -1235,11 +1247,16 @@ class ConfigBar extends CityElement {
 
   initListeners() {
     this.addEventListener('city-element-clicked', evt => {
-      this.city.width = 20;
-      this.city.height = 20;
+      const city = document.querySelector('hoot-city');
+      city.width = 20;
+      city.height = 10;
       const updatedCity = new Event('city-updated');
       document.dispatchEvent(updatedCity);
     });
+  }
+
+  connectedCallback() {
+    this.innerHTML = template$4;
   }
 }
 

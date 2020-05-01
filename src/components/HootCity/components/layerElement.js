@@ -66,13 +66,7 @@ export default class LayerElement extends CityElement {
       this._ctx = null
       this._hitCtx = null
       this._elements = null
-      const drawable = new DrawableElement(
-        this.ctx,
-        { x: this.x, y: this.y },
-        this.getShape(),
-        this.getData(),
-      )
-      this.draw(drawable)
+      this.draw(this.getDrawable())
     })
   }
 
@@ -113,13 +107,16 @@ export default class LayerElement extends CityElement {
     return {}
   }
 
-  connectedCallback() {
-    const drawable = new DrawableElement(
+  getDrawable() {
+    return new DrawableElement(
       this.ctx,
       { x: this.x, y: this.y },
       this.getShape(),
       this.getData(),
     )
-    this.draw(drawable)
+  }
+
+  connectedCallback() {
+    this.draw(this.getDrawable())
   }
 }

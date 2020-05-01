@@ -1,6 +1,19 @@
-import CityElement from './HootCity/components/cityElement'
+const template = /*html*/ `
+  <style>
+    hoot-config-bar {
+      position: absolute;
+      right: 0;
+      height: 100%;
+      width: 350px;
+      background: blue;
+    }
+  </style>
+  <aside>
 
-class ConfigBar extends CityElement {
+  </aside>
+`
+
+class ConfigBar extends HTMLElement {
   constructor() {
     super()
     this.initListeners()
@@ -8,11 +21,16 @@ class ConfigBar extends CityElement {
 
   initListeners() {
     this.addEventListener('city-element-clicked', evt => {
-      this.city.width = 20
-      this.city.height = 20
+      const city = document.querySelector('hoot-city')
+      city.width = 20
+      city.height = 10
       const updatedCity = new Event('city-updated')
       document.dispatchEvent(updatedCity)
     })
+  }
+
+  connectedCallback() {
+    this.innerHTML = template
   }
 }
 
