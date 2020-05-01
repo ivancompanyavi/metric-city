@@ -6,6 +6,9 @@ export default class LayerElement extends CityElement {
   constructor() {
     super()
     this._ctx = null
+    this._hitCtx = null
+    this._elements = null
+    this.initListeners()
   }
 
   get x() {
@@ -56,6 +59,21 @@ export default class LayerElement extends CityElement {
       x: x0 + (x * width) / 2 + (y * width) / 2,
       y: y0 - (x * height) / 2 + (y * height) / 2,
     }
+  }
+
+  initListeners() {
+    document.addEventListener('city-updated', () => {
+      this._ctx = null
+      this._hitCtx = null
+      this._elements = null
+      const drawable = new DrawableElement(
+        this.ctx,
+        { x: this.x, y: this.y },
+        this.getShape(),
+        this.getData(),
+      )
+      this.draw(drawable)
+    })
   }
 
   draw(drawable) {

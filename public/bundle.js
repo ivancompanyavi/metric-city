@@ -111,13 +111,18 @@ class Layer extends CityElement {
   constructor() {
     super();
     this.layerId = layerCounter.getCount();
+
+    this.init();
+  }
+
+  init() {
     this.elements = [];
-    const tpl = this.initTemplate();
-    const _hitGraph = tpl.content.getElementById('hitgraph');
+    this.tpl = this.initTemplate();
+    const _hitGraph = this.tpl.content.getElementById('hitgraph');
     this._hitCtx = _hitGraph.getContext('2d');
-    this.initHitGraph(tpl);
-    this.initCanvas(tpl);
-    this.initShadow(tpl);
+    this.initHitGraph();
+    this.initCanvas();
+    this.initShadow();
     this.initListeners();
   }
 
@@ -127,19 +132,23 @@ class Layer extends CityElement {
     return tpl
   }
 
-  initShadow(tpl) {
-    this.shadow = this.attachShadow({ mode: 'open' });
-    this.shadow.appendChild(tpl.content);
+  initShadow() {
+    if (!this.shadow) {
+      this.shadow = this.attachShadow({ mode: 'open' });
+    }
+    this.shadow.textContent = '';
+    this.shadow.appendChild(this.tpl.content);
   }
 
-  initCanvas(tpl) {
-    const canvas = tpl.content.getElementById('layer');
+  initCanvas() {
+    const canvas = this.tpl.content.getElementById('layer');
     canvas.setAttribute('width', this.width * this.rows);
     canvas.setAttribute('height', this.height * this.columns);
   }
 
-  initHitGraph(tpl) {
-    const canvas = tpl.content.getElementById('hitgraph');
+  initHitGraph() {
+    console.log(this);
+    const canvas = this.tpl.content.getElementById('hitgraph');
     canvas.setAttribute('width', this.width * this.rows);
     canvas.setAttribute('height', this.height * this.columns);
   }
@@ -157,6 +166,10 @@ class Layer extends CityElement {
       if (this.configBar) {
         this.configBar.dispatchEvent(event);
       }
+    });
+
+    document.addEventListener('city-updated', () => {
+      this.init();
     });
   }
 
@@ -264,14 +277,6 @@ class City extends HTMLElement {
       return filteredEvents[0]
     }
   }
-
-  static get observedAttributes() {
-    return ['width', 'height']
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`${name}: from ${oldValue} to ${newValue}`);
-  }
 }
 
 customElements.define('hoot-city', City);
@@ -280,6 +285,9 @@ class LayerElement extends CityElement {
   constructor() {
     super();
     this._ctx = null;
+    this._hitCtx = null;
+    this._elements = null;
+    this.initListeners();
   }
 
   get x() {
@@ -330,6 +338,21 @@ class LayerElement extends CityElement {
       x: x0 + (x * width) / 2 + (y * width) / 2,
       y: y0 - (x * height) / 2 + (y * height) / 2,
     }
+  }
+
+  initListeners() {
+    document.addEventListener('city-updated', () => {
+      this._ctx = null;
+      this._hitCtx = null;
+      this._elements = null;
+      const drawable = new DrawableElement(
+        this.ctx,
+        { x: this.x, y: this.y },
+        this.getShape(),
+        this.getData(),
+      );
+      this.draw(drawable);
+    });
   }
 
   draw(drawable) {
@@ -1213,6 +1236,9 @@ class ConfigBar extends CityElement {
   initListeners() {
     this.addEventListener('city-element-clicked', evt => {
       this.city.width = 20;
+      this.city.height = 20;
+      const updatedCity = new Event('city-updated');
+      document.dispatchEvent(updatedCity);
     });
   }
 }

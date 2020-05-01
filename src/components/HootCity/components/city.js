@@ -80,14 +80,6 @@ export default class City extends HTMLElement {
       return filteredEvents[0]
     }
   }
-
-  static get observedAttributes() {
-    return ['width', 'height']
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`${name}: from ${oldValue} to ${newValue}`)
-  }
 }
 
 customElements.define('hoot-city', City)

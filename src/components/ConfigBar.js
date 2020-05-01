@@ -9,6 +9,9 @@ class ConfigBar extends CityElement {
   initListeners() {
     this.addEventListener('city-element-clicked', evt => {
       this.city.width = 20
+      this.city.height = 20
+      const updatedCity = new Event('city-updated')
+      document.dispatchEvent(updatedCity)
     })
   }
 }
