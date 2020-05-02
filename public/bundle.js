@@ -1,202 +1,7 @@
 
 (function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
-class CityElement extends HTMLElement {
-  constructor() {
-    super();
-    this._city = null;
-    this._configBar = null;
-  }
-
-  getAttr(key, defaultValue) {
-    let value = this.getAttribute(key);
-    if (value === undefined || value === null) {
-      return defaultValue
-    }
-    return value
-  }
-
-  get city() {
-    if (!this._city) {
-      this._city = document.querySelector('hoot-city');
-    }
-    return this._city
-  }
-
-  get configBar() {
-    if (!this._configBar) {
-      this._configBar = document.querySelector('hoot-config-bar');
-    }
-    return this._configBar
-  }
-
-  get width() {
-    return this.city.getAttribute('width')
-  }
-
-  get height() {
-    return this.city.getAttribute('height')
-  }
-  get rows() {
-    return this.city.getAttribute('rows')
-  }
-  get columns() {
-    return this.city.getAttribute('columns')
-  }
-  get offset() {
-    return this.city.getAttribute('offset')
-  }
-}
-
-function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color
-}
-
-function getRandomId() {
-  return (
-    '_' +
-    Math.random()
-      .toString(36)
-      .substr(2, 9)
-  )
-}
-
-class DrawableElement {
-  constructor(ctx, isoPos, shape, data) {
-    this.ctx = ctx;
-    this.shape = shape;
-    this.isoPos = isoPos;
-    this.data = data;
-    this.id = getRandomId();
-  }
-}
-
-function getMousePosition(evt) {
-  return { x: evt.pageX, y: evt.pageY }
-}
-
-class LayerCounter {
-  constructor() {
-    this.counter = 1;
-  }
-
-  getCount() {
-    return this.counter++
-  }
-}
-
-const layerCounter = new LayerCounter();
-
-const SIDEBAR_WIDTH = 100;
-const HEADER_HEIGHT = 60;
-
-const template = `
-  <style>
-    canvas {
-      position: absolute;
-    }
-    #hitgraph {
-      opacity: 0;
-    }
-  </style>
-  <canvas id="layer"></canvas>
-  <canvas id="hitgraph"></canvas>
-`;
-
-class Layer extends CityElement {
-  constructor() {
-    super();
-    this.layerId = layerCounter.getCount();
-
-    this.init();
-  }
-
-  init() {
-    this.elements = [];
-    this.tpl = this.initTemplate();
-    const _hitGraph = this.tpl.content.getElementById('hitgraph');
-    this._hitCtx = _hitGraph.getContext('2d');
-    this.initHitGraph();
-    this.initCanvas();
-    this.initShadow();
-    this.initListeners();
-  }
-
-  initTemplate() {
-    const tpl = document.createElement('template');
-    tpl.innerHTML = template;
-    return tpl
-  }
-
-  initShadow() {
-    if (!this.shadow) {
-      this.shadow = this.attachShadow({ mode: 'open' });
-    }
-    this.shadow.textContent = '';
-    this.shadow.appendChild(this.tpl.content);
-  }
-
-  initCanvas() {
-    const canvas = this.tpl.content.getElementById('layer');
-    canvas.setAttribute('width', this.width * this.rows);
-    canvas.setAttribute('height', this.height * this.columns);
-  }
-
-  initHitGraph() {
-    console.log(this);
-    const canvas = this.tpl.content.getElementById('hitgraph');
-    canvas.setAttribute('width', this.width * this.rows);
-    canvas.setAttribute('height', this.height * this.columns);
-  }
-
-  initListeners() {
-    this.addEventListener('city-click', evt => {
-      const element = this.getClickedElement(evt);
-      const event = new CustomEvent('city-element-clicked', {
-        detail: {
-          element,
-          layerId: this.layerId,
-        },
-      });
-      this.city.dispatchEvent(event);
-      if (this.configBar) {
-        this.configBar.dispatchEvent(event);
-      }
-    });
-
-    document.addEventListener('city-updated', () => {
-      this.init();
-    });
-  }
-
-  getClickedElement(evt) {
-    const point = getMousePosition(evt.detail);
-    const pixel = this._hitCtx.getImageData(
-      point.x - SIDEBAR_WIDTH,
-      point.y - HEADER_HEIGHT,
-      1,
-      1,
-    ).data;
-    const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
-      pixel[1],
-    )}${this.componentToHex(pixel[2])}`;
-    return this.elements.find(e => e.data.color === color.toUpperCase())
-  }
-
-  componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? '0' + hex : hex
-  }
-}
-
-customElements.define('hoot-layer', Layer);
-
-const template$1 = document.createElement('template');
-template$1.innerHTML = `
+const template = document.createElement('template');
+template.innerHTML = `
   <style>
   :host {
     position: relative;
@@ -212,7 +17,7 @@ class City extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
-    this.shadow.appendChild(template$1.content.cloneNode(true));
+    this.shadow.appendChild(template.content.cloneNode(true));
     this.initListeners();
   }
 
@@ -280,6 +85,87 @@ class City extends HTMLElement {
 }
 
 customElements.define('hoot-city', City);
+
+class CityElement extends HTMLElement {
+  constructor() {
+    super();
+    this._city = null;
+    this._configBar = null;
+  }
+
+  getAttr(key, defaultValue) {
+    let value = this.getAttribute(key);
+    if (value === undefined || value === null) {
+      return defaultValue
+    }
+    return value
+  }
+
+  get city() {
+    if (!this._city) {
+      this._city = document.querySelector('hoot-city');
+    }
+    return this._city
+  }
+
+  get configBar() {
+    if (!this._configBar) {
+      this._configBar = document.querySelector('hoot-config-bar');
+    }
+    return this._configBar
+  }
+
+  get width() {
+    return this.city.getAttribute('width')
+  }
+
+  get height() {
+    return this.city.getAttribute('height')
+  }
+  get rows() {
+    return this.city.getAttribute('rows')
+  }
+  get columns() {
+    return this.city.getAttribute('columns')
+  }
+  get offset() {
+    return this.city.getAttribute('offset')
+  }
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color
+}
+
+class LayerCounter {
+  constructor() {
+    this.counter = 1;
+  }
+
+  getCount() {
+    return this.counter++
+  }
+}
+
+const layerCounter = new LayerCounter();
+
+class DrawableElement {
+  constructor(ctx, isoPos, shape, data) {
+    this.ctx = ctx;
+    this.shape = shape;
+    this.isoPos = isoPos;
+    this.data = data;
+    this.id = this.getRandomId();
+  }
+  getRandomId() {
+    return '_' + Math.random().toString(36).substr(2, 9)
+  }
+}
 
 class LayerElement extends CityElement {
   constructor() {
@@ -994,80 +880,6 @@ class TileMap extends Building {
   }
 }
 
-class HootTileMap extends LayerElement {
-  get color() {
-    return this.getAttribute('color')
-  }
-
-  getData() {
-    return {
-      rows: this.rows,
-      columns: this.columns,
-      color: this.color,
-    }
-  }
-
-  getShape() {
-    return TileMap
-  }
-}
-
-customElements.define('hoot-tile-map', HootTileMap);
-
-class HootHouse extends LayerElement {
-  getData() {
-    return {
-      pct: this.getAttr('pct', 0.0),
-      w: this.getAttr('w', 4),
-      h: this.getAttr('h', 4),
-      t: this.getAttr('t', 10),
-      color: this.getAttr('color', getRandomColor()),
-    }
-  }
-
-  getShape() {
-    return House
-  }
-}
-
-customElements.define('hoot-house', HootHouse);
-
-class HootTextTile extends LayerElement {
-  getData() {
-    return {
-      text: this.getAttr('text', ''),
-      textColor: this.getAttr('textColor', 'white'),
-      font: this.getAttr('font', '20px aria'),
-    }
-  }
-
-  getShape() {
-    return TextTile
-  }
-}
-
-customElements.define('hoot-text', HootTextTile);
-
-class HootRoad extends LayerElement {
-  getData() {
-    let defaultLength = this.city.columns;
-    const dir = this.getAttr('direction', 'right');
-    if (dir === 'right') {
-      defaultLength = this.city.rows;
-    }
-    return {
-      length: this.getAttr('length', defaultLength),
-      direction: dir,
-    }
-  }
-
-  getShape() {
-    return Road
-  }
-}
-
-customElements.define('hoot-road', HootRoad);
-
 class HootFireStation extends LayerElement {
   getData() {
     return {}
@@ -1092,6 +904,131 @@ class HootHospital extends LayerElement {
 
 customElements.define('hoot-hospital', HootHospital);
 
+class HootHouse extends LayerElement {
+  getData() {
+    return {
+      pct: this.getAttr('pct', 0.0),
+      w: this.getAttr('w', 4),
+      h: this.getAttr('h', 4),
+      t: this.getAttr('t', 10),
+      color: this.getAttr('color', getRandomColor()),
+    }
+  }
+
+  getShape() {
+    return House
+  }
+}
+
+customElements.define('hoot-house', HootHouse);
+
+const SIDEBAR_WIDTH = 100;
+const HEADER_HEIGHT = 60;
+
+const template$1 = `
+  <style>
+    canvas {
+      position: absolute;
+    }
+    #hitgraph {
+      opacity: 0;
+    }
+  </style>
+  <canvas id="layer"></canvas>
+  <canvas id="hitgraph"></canvas>
+`;
+
+class Layer extends CityElement {
+  constructor() {
+    super();
+    this.layerId = layerCounter.getCount();
+
+    this.init();
+  }
+
+  init() {
+    this.elements = [];
+    this.tpl = this.initTemplate();
+    const _hitGraph = this.tpl.content.getElementById('hitgraph');
+    this._hitCtx = _hitGraph.getContext('2d');
+    this.initHitGraph();
+    this.initCanvas();
+    this.initShadow();
+    this.initListeners();
+  }
+
+  initTemplate() {
+    const tpl = document.createElement('template');
+    tpl.innerHTML = template$1;
+    return tpl
+  }
+
+  initShadow() {
+    if (!this.shadow) {
+      this.shadow = this.attachShadow({ mode: 'open' });
+    }
+    this.shadow.textContent = '';
+    this.shadow.appendChild(this.tpl.content);
+  }
+
+  initCanvas() {
+    const canvas = this.tpl.content.getElementById('layer');
+    canvas.setAttribute('width', this.width * this.rows);
+    canvas.setAttribute('height', this.height * this.columns);
+  }
+
+  initHitGraph() {
+    console.log(this);
+    const canvas = this.tpl.content.getElementById('hitgraph');
+    canvas.setAttribute('width', this.width * this.rows);
+    canvas.setAttribute('height', this.height * this.columns);
+  }
+
+  initListeners() {
+    this.addEventListener('city-click', evt => {
+      const element = this.getClickedElement(evt);
+      const event = new CustomEvent('city-element-clicked', {
+        detail: {
+          element,
+          layerId: this.layerId,
+        },
+      });
+      this.city.dispatchEvent(event);
+      if (this.configBar) {
+        this.configBar.dispatchEvent(event);
+      }
+    });
+
+    document.addEventListener('city-updated', () => {
+      this.init();
+    });
+  }
+  getMousePosition(evt) {
+    return { x: evt.pageX, y: evt.pageY }
+  }
+
+  getClickedElement(evt) {
+    const point = this.getMousePosition(evt.detail);
+    const pixel = this._hitCtx.getImageData(
+      point.x - SIDEBAR_WIDTH,
+      point.y - HEADER_HEIGHT,
+      1,
+      1,
+    ).data;
+    const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
+      pixel[1],
+    )}${this.componentToHex(pixel[2])}`;
+    return this.elements.find(e => e.data.color === color.toUpperCase())
+  }
+
+  componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex
+  }
+}
+
+customElements.define('hoot-layer', Layer);
+
 class HootPark extends LayerElement {
   getData() {
     return {
@@ -1107,7 +1044,123 @@ class HootPark extends LayerElement {
 
 customElements.define('hoot-park', HootPark);
 
+class HootRoad extends LayerElement {
+  getData() {
+    let defaultLength = this.city.columns;
+    const dir = this.getAttr('direction', 'right');
+    if (dir === 'right') {
+      defaultLength = this.city.rows;
+    }
+    return {
+      length: this.getAttr('length', defaultLength),
+      direction: dir,
+    }
+  }
+
+  getShape() {
+    return Road
+  }
+}
+
+customElements.define('hoot-road', HootRoad);
+
+class HootTextTile extends LayerElement {
+  getData() {
+    return {
+      text: this.getAttr('text', ''),
+      textColor: this.getAttr('textColor', 'white'),
+      font: this.getAttr('font', '20px aria'),
+    }
+  }
+
+  getShape() {
+    return TextTile
+  }
+}
+
+customElements.define('hoot-text', HootTextTile);
+
+class HootTileMap extends LayerElement {
+  get color() {
+    return this.getAttribute('color')
+  }
+
+  getData() {
+    return {
+      rows: this.rows,
+      columns: this.columns,
+      color: this.color,
+    }
+  }
+
+  getShape() {
+    return TileMap
+  }
+}
+
+customElements.define('hoot-tile-map', HootTileMap);
+
 const template$2 = /*html*/ `
+  <style>
+    hoot-config-bar {
+      position: absolute;
+      right: 0;
+      height: 100%;
+      width: 350px;
+      background: blue;
+    }
+  </style>
+  <aside>
+
+  </aside>
+`;
+
+class ConfigBar extends HTMLElement {
+  constructor() {
+    super();
+    this.initListeners();
+  }
+
+  initListeners() {
+    this.addEventListener('city-element-clicked', evt => {
+      const city = document.querySelector('hoot-city');
+      city.width = 20;
+      city.height = 10;
+      const updatedCity = new Event('city-updated');
+      document.dispatchEvent(updatedCity);
+    });
+  }
+
+  connectedCallback() {
+    this.innerHTML = template$2;
+  }
+}
+
+customElements.define('hoot-config-bar', ConfigBar);
+
+const template$3 = /*html*/ `
+<style>
+  * {
+    color: var(--color-white);
+  }
+:host {
+    grid-area: content;
+    position: relative;
+}
+</style>
+<slot></slot>
+`;
+
+class Content extends HTMLElement {
+  connectedCallback() {
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = template$3;
+  }
+}
+
+customElements.define('hoot-content', Content);
+
+const template$4 = /*html*/ `
 <style>
   hoot-nav {
     grid-area: nav;
@@ -1186,7 +1239,7 @@ const template$2 = /*html*/ `
 `;
 class Nav extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = template$2;
+    this.innerHTML = template$4;
     this.selectLink();
   }
 
@@ -1201,63 +1254,3 @@ class Nav extends HTMLElement {
 }
 
 customElements.define('hoot-nav', Nav);
-
-const template$3 = /*html*/ `
-<style>
-  * {
-    color: var(--color-white);
-  }
-:host {
-    grid-area: content;
-    position: relative;
-}
-</style>
-<slot></slot>
-`;
-
-class Content extends HTMLElement {
-  connectedCallback() {
-    this.attachShadow({ mode: 'open' });
-    this.shadowRoot.innerHTML = template$3;
-  }
-}
-
-customElements.define('hoot-content', Content);
-
-const template$4 = /*html*/ `
-  <style>
-    hoot-config-bar {
-      position: absolute;
-      right: 0;
-      height: 100%;
-      width: 350px;
-      background: blue;
-    }
-  </style>
-  <aside>
-
-  </aside>
-`;
-
-class ConfigBar extends HTMLElement {
-  constructor() {
-    super();
-    this.initListeners();
-  }
-
-  initListeners() {
-    this.addEventListener('city-element-clicked', evt => {
-      const city = document.querySelector('hoot-city');
-      city.width = 20;
-      city.height = 10;
-      const updatedCity = new Event('city-updated');
-      document.dispatchEvent(updatedCity);
-    });
-  }
-
-  connectedCallback() {
-    this.innerHTML = template$4;
-  }
-}
-
-customElements.define('hoot-config-bar', ConfigBar);

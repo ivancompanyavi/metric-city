@@ -1,5 +1,5 @@
-import LayerElement from './layerElement'
-import { Hospital } from '../../../common/engine'
+import LayerElement from './layer-element'
+import { Hospital } from '../models'
 
 export default class HootHospital extends LayerElement {
   getData() {

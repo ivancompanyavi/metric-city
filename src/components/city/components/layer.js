@@ -1,5 +1,5 @@
-import CityElement from './cityElement'
-import { getMousePosition, layerCounter } from '../models'
+import CityElement from './city-element'
+import { layerCounter } from '../models'
 
 const SIDEBAR_WIDTH = 100
 const HEADER_HEIGHT = 60
@@ -82,9 +82,12 @@ export default class Layer extends CityElement {
       this.init()
     })
   }
+  getMousePosition(evt) {
+    return { x: evt.pageX, y: evt.pageY }
+  }
 
   getClickedElement(evt) {
-    const point = getMousePosition(evt.detail)
+    const point = this.getMousePosition(evt.detail)
     const pixel = this._hitCtx.getImageData(
       point.x - SIDEBAR_WIDTH,
       point.y - HEADER_HEIGHT,

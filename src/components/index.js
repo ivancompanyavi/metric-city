@@ -1,4 +1,4 @@
-import './HootCity'
-import './Nav'
-import './Content'
-import './ConfigBar'
+import './city'
+import './config-bar'
+import './content'
+import './nav'

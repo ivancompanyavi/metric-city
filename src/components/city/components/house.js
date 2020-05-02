@@ -1,6 +1,6 @@
-import LayerElement from './layerElement'
-import { House } from '../../../common/engine'
-import { getRandomColor } from '../../../common/engine/utils'
+import LayerElement from './layer-element'
+import { House } from '../models'
+import { getRandomColor } from '../models'
 
 export default class HootHouse extends LayerElement {
   getData() {

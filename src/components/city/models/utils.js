@@ -7,11 +7,16 @@ export function getRandomColor() {
   return color
 }
 
-export function getRandomId() {
-  return (
-    '_' +
-    Math.random()
-      .toString(36)
-      .substr(2, 9)
-  )
+class LayerCounter {
+  constructor() {
+    this.counter = 1
+  }
+
+  getCount() {
+    return this.counter++
+  }
 }
+
+const layerCounter = new LayerCounter()
+
+export { layerCounter }

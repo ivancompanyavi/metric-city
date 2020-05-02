@@ -1,5 +1,5 @@
-import LayerElement from './layerElement'
-import { Park } from '../../../common/engine'
+import LayerElement from './layer-element'
+import { Park } from '../models'
 
 export default class HootPark extends LayerElement {
   getData() {

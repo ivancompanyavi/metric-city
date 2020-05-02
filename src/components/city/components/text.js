@@ -1,5 +1,5 @@
-import LayerElement from './layerElement'
-import { TextTile } from '../../../common/engine'
+import LayerElement from './layer-element'
+import { TextTile } from '../models'
 
 export default class HootTextTile extends LayerElement {
   getData() {

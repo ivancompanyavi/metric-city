@@ -1,11 +1,26 @@
-import CityElement from './HootCity/components/cityElement'
-import { DrawableElement } from './models'
-import { getRandomColor } from '../common/engine/utils'
+import CityElement from './city-element'
+import { getRandomColor } from '../models/utils'
+
+export class DrawableElement {
+  constructor(ctx, isoPos, shape, data) {
+    this.ctx = ctx
+    this.shape = shape
+    this.isoPos = isoPos
+    this.data = data
+    this.id = this.getRandomId()
+  }
+  getRandomId() {
+    return '_' + Math.random().toString(36).substr(2, 9)
+  }
+}
 
 export default class LayerElement extends CityElement {
   constructor() {
     super()
     this._ctx = null
+    this._hitCtx = null
+    this._elements = null
+    this.initListeners()
   }
 
   get x() {
@@ -58,6 +73,15 @@ export default class LayerElement extends CityElement {
     }
   }
 
+  initListeners() {
+    document.addEventListener('city-updated', () => {
+      this._ctx = null
+      this._hitCtx = null
+      this._elements = null
+      this.draw(this.getDrawable())
+    })
+  }
+
   draw(drawable) {
     const { width, height } = this
     const s = new drawable.shape({
@@ -95,13 +119,16 @@ export default class LayerElement extends CityElement {
     return {}
   }
 
-  connectedCallback() {
-    const drawable = new DrawableElement(
+  getDrawable() {
+    return new DrawableElement(
       this.ctx,
       { x: this.x, y: this.y },
       this.getShape(),
       this.getData(),
     )
-    this.draw(drawable)
+  }
+
+  connectedCallback() {
+    this.draw(this.getDrawable())
   }
 }

@@ -10,6 +10,7 @@ import {
   TileMap,
 } from './buildings'
 import { Road } from './misc'
+import { getRandomColor, layerCounter } from './utils'
 
 export {
   BuildingFactory,
@@ -23,4 +24,6 @@ export {
   Road,
   TextTile,
   TileMap,
+  getRandomColor,
+  layerCounter,
 }
