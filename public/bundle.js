@@ -22,50 +22,47 @@ class City extends HTMLElement {
   }
 
   get width() {
-    return this.getAttribute('width')
+    return this.dataset.width
   }
 
   set width(newValue) {
-    this.setAttribute('width', newValue);
+    this.dataset.width = newValue;
   }
 
   get height() {
-    return this.getAttribute('height')
+    return this.dataset.height
   }
 
   set height(newValue) {
-    this.setAttribute('height', newValue);
+    this.dataset.height = newValue;
   }
 
   get rows() {
-    return this.getAttribute('rows')
+    return this.dataset.rows
   }
 
   set rows(newValue) {
-    this.setAttribute('rows', newValue);
+    this.dataset.rows = newValue;
   }
 
   get columns() {
-    return this.getAttribute('columns')
+    return this.dataset.columns
   }
 
   set columns(newValue) {
-    this.setAttribute('columns', newValue);
+    this.dataset.columns = newValue;
   }
 
   get offset() {
-    return this.getAttribute('offset')
+    return this.dataset.offset
   }
 
   initListeners() {
     this.addEventListener('click', evt => {
-      const layers = this.querySelectorAll('hoot-layer');
-      layers.forEach(layer => {
-        layer.dispatchEvent(new CustomEvent('city-click', { detail: evt }));
-      });
+      document.dispatchEvent(new CustomEvent('city-click', { detail: evt }));
     });
     let layerEventBuffer = [];
-    this.addEventListener('city-element-clicked', evt => {
+    document.addEventListener('city-element-clicked', evt => {
       const layers = this.querySelectorAll('hoot-layer');
       layerEventBuffer.push(evt.detail);
       if (layerEventBuffer.length === layers.length) {
@@ -86,6 +83,10 @@ class City extends HTMLElement {
 
 customElements.define('hoot-city', City);
 
+function getRandomId() {
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
+
 class CityElement extends HTMLElement {
   constructor() {
     super();
@@ -94,7 +95,7 @@ class CityElement extends HTMLElement {
   }
 
   getAttr(key, defaultValue) {
-    let value = this.getAttribute(key);
+    let value = this.dataset[key];
     if (value === undefined || value === null) {
       return defaultValue
     }
@@ -116,20 +117,24 @@ class CityElement extends HTMLElement {
   }
 
   get width() {
-    return this.city.getAttribute('width')
+    return this.city.dataset.width
   }
 
   get height() {
-    return this.city.getAttribute('height')
+    return this.city.dataset.height
   }
   get rows() {
-    return this.city.getAttribute('rows')
+    return this.city.dataset.rows
   }
   get columns() {
-    return this.city.getAttribute('columns')
+    return this.city.dataset.columns
   }
   get offset() {
-    return this.city.getAttribute('offset')
+    return this.city.dataset.offset || 0
+  }
+
+  connectedCallback() {
+    this.setAttribute('id', getRandomId());
   }
 }
 
@@ -160,10 +165,6 @@ class DrawableElement {
     this.shape = shape;
     this.isoPos = isoPos;
     this.data = data;
-    this.id = this.getRandomId();
-  }
-  getRandomId() {
-    return '_' + Math.random().toString(36).substr(2, 9)
   }
 }
 
@@ -177,11 +178,11 @@ class LayerElement extends CityElement {
   }
 
   get x() {
-    return this.getAttr('x', 0)
+    return parseInt(this.dataset.x) || 0
   }
 
   get y() {
-    return this.getAttr('y', 0)
+    return parseInt(this.dataset.y) || 0
   }
 
   get ctx() {
@@ -243,8 +244,8 @@ class LayerElement extends CityElement {
       height,
       point: this.isometricToCartesian(drawable.isoPos),
     });
-
     const coords = s.draw(drawable.data);
+    this.setAttribute('id', drawable.id);
     this.drawHitGraph(drawable);
     return coords
   }
@@ -260,6 +261,7 @@ class LayerElement extends CityElement {
     });
     const color = getRandomColor();
     drawable.data.color = color;
+    drawable.data.id = this.getAttribute('id');
     hitGraphDrawable.drawHitGraph(drawable.data);
     this.elements.push(drawable);
   }
@@ -282,6 +284,7 @@ class LayerElement extends CityElement {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.draw(this.getDrawable());
   }
 }
@@ -944,6 +947,7 @@ class Layer extends CityElement {
     this.layerId = layerCounter.getCount();
 
     this.init();
+    this.initListeners();
   }
 
   init() {
@@ -951,10 +955,9 @@ class Layer extends CityElement {
     this.tpl = this.initTemplate();
     const _hitGraph = this.tpl.content.getElementById('hitgraph');
     this._hitCtx = _hitGraph.getContext('2d');
-    this.initHitGraph();
-    this.initCanvas();
+    this.initCanvas('layer');
+    this.initCanvas('hitgraph');
     this.initShadow();
-    this.initListeners();
   }
 
   initTemplate() {
@@ -971,31 +974,23 @@ class Layer extends CityElement {
     this.shadow.appendChild(this.tpl.content);
   }
 
-  initCanvas() {
-    const canvas = this.tpl.content.getElementById('layer');
-    canvas.setAttribute('width', this.width * this.rows);
-    canvas.setAttribute('height', this.height * this.columns);
-  }
-
-  initHitGraph() {
-    console.log(this);
-    const canvas = this.tpl.content.getElementById('hitgraph');
+  initCanvas(canvasName) {
+    const canvas = this.tpl.content.getElementById(canvasName);
     canvas.setAttribute('width', this.width * this.rows);
     canvas.setAttribute('height', this.height * this.columns);
   }
 
   initListeners() {
-    this.addEventListener('city-click', evt => {
+    document.addEventListener('city-click', evt => {
       const element = this.getClickedElement(evt);
-      const event = new CustomEvent('city-element-clicked', {
-        detail: {
-          element,
-          layerId: this.layerId,
-        },
-      });
-      this.city.dispatchEvent(event);
-      if (this.configBar) {
-        this.configBar.dispatchEvent(event);
+      if (element) {
+        const event = new CustomEvent('city-element-clicked', {
+          detail: {
+            element,
+            layerId: this.layerId,
+          },
+        });
+        document.dispatchEvent(event);
       }
     });
 
@@ -1082,7 +1077,7 @@ customElements.define('hoot-text', HootTextTile);
 
 class HootTileMap extends LayerElement {
   get color() {
-    return this.getAttribute('color')
+    return this.dataset.color
   }
 
   getData() {
@@ -1107,7 +1102,7 @@ const template$2 = /*html*/ `
       right: 0;
       height: 100%;
       width: 350px;
-      background: blue;
+      background: var(--color-grey);
     }
   </style>
   <aside>
@@ -1122,10 +1117,10 @@ class ConfigBar extends HTMLElement {
   }
 
   initListeners() {
-    this.addEventListener('city-element-clicked', evt => {
+    document.addEventListener('city-element-clicked', evt => {
       const city = document.querySelector('hoot-city');
-      city.width = 20;
-      city.height = 10;
+      city.width = 50;
+      city.height = 25;
       const updatedCity = new Event('city-updated');
       document.dispatchEvent(updatedCity);
     });

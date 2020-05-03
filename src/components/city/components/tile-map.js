@@ -3,7 +3,7 @@ import { TileMap } from '../models'
 
 export default class HootTileMap extends LayerElement {
   get color() {
-    return this.getAttribute('color')
+    return this.dataset.color
   }
 
   getData() {

@@ -23,6 +23,7 @@ export default class Layer extends CityElement {
     this.layerId = layerCounter.getCount()
 
     this.init()
+    this.initListeners()
   }
 
   init() {
@@ -30,10 +31,9 @@ export default class Layer extends CityElement {
     this.tpl = this.initTemplate()
     const _hitGraph = this.tpl.content.getElementById('hitgraph')
     this._hitCtx = _hitGraph.getContext('2d')
-    this.initHitGraph()
-    this.initCanvas()
+    this.initCanvas('layer')
+    this.initCanvas('hitgraph')
     this.initShadow()
-    this.initListeners()
   }
 
   initTemplate() {
@@ -50,31 +50,23 @@ export default class Layer extends CityElement {
     this.shadow.appendChild(this.tpl.content)
   }
 
-  initCanvas() {
-    const canvas = this.tpl.content.getElementById('layer')
-    canvas.setAttribute('width', this.width * this.rows)
-    canvas.setAttribute('height', this.height * this.columns)
-  }
-
-  initHitGraph() {
-    console.log(this)
-    const canvas = this.tpl.content.getElementById('hitgraph')
+  initCanvas(canvasName) {
+    const canvas = this.tpl.content.getElementById(canvasName)
     canvas.setAttribute('width', this.width * this.rows)
     canvas.setAttribute('height', this.height * this.columns)
   }
 
   initListeners() {
-    this.addEventListener('city-click', evt => {
+    document.addEventListener('city-click', evt => {
       const element = this.getClickedElement(evt)
-      const event = new CustomEvent('city-element-clicked', {
-        detail: {
-          element,
-          layerId: this.layerId,
-        },
-      })
-      this.city.dispatchEvent(event)
-      if (this.configBar) {
-        this.configBar.dispatchEvent(event)
+      if (element) {
+        const event = new CustomEvent('city-element-clicked', {
+          detail: {
+            element,
+            layerId: this.layerId,
+          },
+        })
+        document.dispatchEvent(event)
       }
     })
 

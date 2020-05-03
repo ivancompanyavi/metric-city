@@ -7,10 +7,6 @@ export class DrawableElement {
     this.shape = shape
     this.isoPos = isoPos
     this.data = data
-    this.id = this.getRandomId()
-  }
-  getRandomId() {
-    return '_' + Math.random().toString(36).substr(2, 9)
   }
 }
 
@@ -24,11 +20,11 @@ export default class LayerElement extends CityElement {
   }
 
   get x() {
-    return this.getAttr('x', 0)
+    return parseInt(this.dataset.x) || 0
   }
 
   get y() {
-    return this.getAttr('y', 0)
+    return parseInt(this.dataset.y) || 0
   }
 
   get ctx() {
@@ -90,8 +86,8 @@ export default class LayerElement extends CityElement {
       height,
       point: this.isometricToCartesian(drawable.isoPos),
     })
-
     const coords = s.draw(drawable.data)
+    this.setAttribute('id', drawable.id)
     this.drawHitGraph(drawable)
     return coords
   }
@@ -107,6 +103,7 @@ export default class LayerElement extends CityElement {
     })
     const color = getRandomColor()
     drawable.data.color = color
+    drawable.data.id = this.getAttribute('id')
     hitGraphDrawable.drawHitGraph(drawable.data)
     this.elements.push(drawable)
   }
@@ -129,6 +126,7 @@ export default class LayerElement extends CityElement {
   }
 
   connectedCallback() {
+    super.connectedCallback()
     this.draw(this.getDrawable())
   }
 }

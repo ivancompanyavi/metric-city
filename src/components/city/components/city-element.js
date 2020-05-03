@@ -1,3 +1,7 @@
+function getRandomId() {
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
+
 export default class CityElement extends HTMLElement {
   constructor() {
     super()
@@ -6,7 +10,7 @@ export default class CityElement extends HTMLElement {
   }
 
   getAttr(key, defaultValue) {
-    let value = this.getAttribute(key)
+    let value = this.dataset[key]
     if (value === undefined || value === null) {
       return defaultValue
     }
@@ -28,19 +32,23 @@ export default class CityElement extends HTMLElement {
   }
 
   get width() {
-    return this.city.getAttribute('width')
+    return this.city.dataset.width
   }
 
   get height() {
-    return this.city.getAttribute('height')
+    return this.city.dataset.height
   }
   get rows() {
-    return this.city.getAttribute('rows')
+    return this.city.dataset.rows
   }
   get columns() {
-    return this.city.getAttribute('columns')
+    return this.city.dataset.columns
   }
   get offset() {
-    return this.city.getAttribute('offset')
+    return this.city.dataset.offset || 0
+  }
+
+  connectedCallback() {
+    this.setAttribute('id', getRandomId())
   }
 }

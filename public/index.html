@@ -18,18 +18,32 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <hoot-nav></hoot-nav>
     <hoot-content>
-      <hoot-city width="30" height="15" rows="50" columns="50">
+      <hoot-city
+        data-width="30"
+        data-height="15"
+        data-rows="50"
+        data-columns="50"
+      >
         <hoot-layer id="map">
-          <hoot-tile-map x="0" y="0" color="red" />
+          <hoot-tile-map data-x="0" data-y="0" data-color="red" />
         </hoot-layer>
         <hoot-layer id="buildings">
-          <hoot-house x="10" y="29" pct="0.4"></hoot-house>
-          <hoot-text x="15" y="29" text="hello"></hoot-text>
-          <hoot-road x="0" y="29" length="5"></hoot-road>
-          <hoot-road x="0" y="39" length="5" direction="left"></hoot-road>
-          <hoot-fire-station x="18" y="8" length="5"></hoot-fire-station>
-          <hoot-hospital x="0" y="8" length="5"></hoot-hospital>
-          <hoot-park x="0" y="15" length="5"></hoot-park>
+          <hoot-house data-x="10" data-y="29" data-pct="0.4"></hoot-house>
+          <hoot-text data-x="15" data-y="29" data-text="hello"></hoot-text>
+          <hoot-road data-x="0" data-y="29" data-length="5"></hoot-road>
+          <hoot-road
+            data-x="0"
+            data-y="39"
+            data-length="5"
+            data-direction="left"
+          ></hoot-road>
+          <hoot-fire-station
+            data-x="18"
+            data-y="8"
+            data-length="5"
+          ></hoot-fire-station>
+          <hoot-hospital data-x="0" data-y="8" data-length="5"></hoot-hospital>
+          <hoot-park data-x="0" data-y="15" data-length="5"></hoot-park>
         </hoot-layer>
       </hoot-city>
     </hoot-content>

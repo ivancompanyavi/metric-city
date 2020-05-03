@@ -5,7 +5,7 @@ const template = /*html*/ `
       right: 0;
       height: 100%;
       width: 350px;
-      background: blue;
+      background: var(--color-grey);
     }
   </style>
   <aside>
@@ -20,10 +20,10 @@ class ConfigBar extends HTMLElement {
   }
 
   initListeners() {
-    this.addEventListener('city-element-clicked', evt => {
+    document.addEventListener('city-element-clicked', evt => {
       const city = document.querySelector('hoot-city')
-      city.width = 20
-      city.height = 10
+      city.width = 50
+      city.height = 25
       const updatedCity = new Event('city-updated')
       document.dispatchEvent(updatedCity)
     })

@@ -20,50 +20,47 @@ export default class City extends HTMLElement {
   }
 
   get width() {
-    return this.getAttribute('width')
+    return this.dataset.width
   }
 
   set width(newValue) {
-    this.setAttribute('width', newValue)
+    this.dataset.width = newValue
   }
 
   get height() {
-    return this.getAttribute('height')
+    return this.dataset.height
   }
 
   set height(newValue) {
-    this.setAttribute('height', newValue)
+    this.dataset.height = newValue
   }
 
   get rows() {
-    return this.getAttribute('rows')
+    return this.dataset.rows
   }
 
   set rows(newValue) {
-    this.setAttribute('rows', newValue)
+    this.dataset.rows = newValue
   }
 
   get columns() {
-    return this.getAttribute('columns')
+    return this.dataset.columns
   }
 
   set columns(newValue) {
-    this.setAttribute('columns', newValue)
+    this.dataset.columns = newValue
   }
 
   get offset() {
-    return this.getAttribute('offset')
+    return this.dataset.offset
   }
 
   initListeners() {
     this.addEventListener('click', evt => {
-      const layers = this.querySelectorAll('hoot-layer')
-      layers.forEach(layer => {
-        layer.dispatchEvent(new CustomEvent('city-click', { detail: evt }))
-      })
+      document.dispatchEvent(new CustomEvent('city-click', { detail: evt }))
     })
     let layerEventBuffer = []
-    this.addEventListener('city-element-clicked', evt => {
+    document.addEventListener('city-element-clicked', evt => {
       const layers = this.querySelectorAll('hoot-layer')
       layerEventBuffer.push(evt.detail)
       if (layerEventBuffer.length === layers.length) {
