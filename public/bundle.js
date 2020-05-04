@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.head.appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
@@ -63,7 +63,7 @@ class City extends HTMLElement {
     });
     let layerEventBuffer = [];
     document.addEventListener('city-element-clicked', evt => {
-      const layers = this.querySelectorAll('hoot-layer');
+      const layers = this.querySelectorAll('metric-layer');
       layerEventBuffer.push(evt.detail);
       if (layerEventBuffer.length === layers.length) {
         console.log(this.processLayerEvents(layerEventBuffer));
@@ -81,7 +81,7 @@ class City extends HTMLElement {
   }
 }
 
-customElements.define('hoot-city', City);
+customElements.define('metric-city', City);
 
 function getRandomId() {
   return '_' + Math.random().toString(36).substr(2, 9)
@@ -103,7 +103,7 @@ class CityElement extends HTMLElement {
 
   get city() {
     if (!this._city) {
-      this._city = document.querySelector('hoot-city');
+      this._city = document.querySelector('metric-city');
     }
     return this._city
   }
@@ -204,7 +204,7 @@ class LayerElement extends CityElement {
   _getClosestLayer() {
     let elem = this;
     for (; elem && elem !== document; elem = elem.parentNode) {
-      if (elem.matches('hoot-layer')) return elem
+      if (elem.matches('metric-layer')) return elem
     }
   }
 
@@ -885,7 +885,7 @@ class HootFireStation extends LayerElement {
   }
 }
 
-customElements.define('hoot-fire-station', HootFireStation);
+customElements.define('metric-fire-station', HootFireStation);
 
 class HootHospital extends LayerElement {
   getData() {
@@ -897,7 +897,7 @@ class HootHospital extends LayerElement {
   }
 }
 
-customElements.define('hoot-hospital', HootHospital);
+customElements.define('metric-hospital', HootHospital);
 
 class HootHouse extends LayerElement {
   getData() {
@@ -915,7 +915,7 @@ class HootHouse extends LayerElement {
   }
 }
 
-customElements.define('hoot-house', HootHouse);
+customElements.define('metric-house', HootHouse);
 
 const SIDEBAR_WIDTH = 100;
 const HEADER_HEIGHT = 60;
@@ -1014,7 +1014,7 @@ class Layer extends CityElement {
   }
 }
 
-customElements.define('hoot-layer', Layer);
+customElements.define('metric-layer', Layer);
 
 class HootPark extends LayerElement {
   getData() {
@@ -1029,7 +1029,7 @@ class HootPark extends LayerElement {
   }
 }
 
-customElements.define('hoot-park', HootPark);
+customElements.define('metric-park', HootPark);
 
 class HootRoad extends LayerElement {
   getData() {
@@ -1049,7 +1049,7 @@ class HootRoad extends LayerElement {
   }
 }
 
-customElements.define('hoot-road', HootRoad);
+customElements.define('metric-road', HootRoad);
 
 class HootTextTile extends LayerElement {
   getData() {
@@ -1065,7 +1065,7 @@ class HootTextTile extends LayerElement {
   }
 }
 
-customElements.define('hoot-text', HootTextTile);
+customElements.define('metric-text', HootTextTile);
 
 class HootTileMap extends LayerElement {
   get color() {
@@ -1085,11 +1085,11 @@ class HootTileMap extends LayerElement {
   }
 }
 
-customElements.define('hoot-tile-map', HootTileMap);
+customElements.define('metric-tile-map', HootTileMap);
 
 const template$2 = /*html*/ `
   <style>
-    hoot-config-bar {
+    metric-config-bar {
       position: absolute;
       right: 0;
       height: 100%;
@@ -1167,7 +1167,7 @@ class ConfigBar extends HTMLElement {
   }
 }
 
-customElements.define('hoot-config-bar', ConfigBar);
+customElements.define('metric-config-bar', ConfigBar);
 
 const template$3 = /*html*/ `
 <style>
@@ -1189,11 +1189,11 @@ class Content extends HTMLElement {
   }
 }
 
-customElements.define('hoot-content', Content);
+customElements.define('metric-content', Content);
 
 const template$4 = /*html*/ `
 <style>
-  hoot-nav {
+  metric-nav {
     grid-area: nav;
     background-color: var(--color-grey);
   }
@@ -1284,4 +1284,4 @@ class Nav extends HTMLElement {
   }
 }
 
-customElements.define('hoot-nav', Nav);
+customElements.define('metric-nav', Nav);

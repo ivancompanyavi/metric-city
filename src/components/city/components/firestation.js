@@ -11,4 +11,4 @@ export default class HootFireStation extends LayerElement {
   }
 }
 
-customElements.define('hoot-fire-station', HootFireStation)
+customElements.define('metric-fire-station', HootFireStation)

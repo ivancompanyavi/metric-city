@@ -19,4 +19,4 @@ export default class HootRoad extends LayerElement {
   }
 }
 
-customElements.define('hoot-road', HootRoad)
+customElements.define('metric-road', HootRoad)

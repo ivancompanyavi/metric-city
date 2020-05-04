@@ -11,4 +11,4 @@ export default class HootHospital extends LayerElement {
   }
 }
 
-customElements.define('hoot-hospital', HootHospital)
+customElements.define('metric-hospital', HootHospital)

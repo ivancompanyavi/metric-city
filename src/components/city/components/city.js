@@ -61,7 +61,7 @@ export default class City extends HTMLElement {
     })
     let layerEventBuffer = []
     document.addEventListener('city-element-clicked', evt => {
-      const layers = this.querySelectorAll('hoot-layer')
+      const layers = this.querySelectorAll('metric-layer')
       layerEventBuffer.push(evt.detail)
       if (layerEventBuffer.length === layers.length) {
         console.log(this.processLayerEvents(layerEventBuffer))
@@ -79,4 +79,4 @@ export default class City extends HTMLElement {
   }
 }
 
-customElements.define('hoot-city', City)
+customElements.define('metric-city', City)

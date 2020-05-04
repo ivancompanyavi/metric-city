@@ -98,4 +98,4 @@ export default class Layer extends CityElement {
   }
 }
 
-customElements.define('hoot-layer', Layer)
+customElements.define('metric-layer', Layer)

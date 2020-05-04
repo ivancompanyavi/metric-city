@@ -1,6 +1,6 @@
 const template = /*html*/ `
 <style>
-  hoot-nav {
+  metric-nav {
     grid-area: nav;
     background-color: var(--color-grey);
   }
@@ -91,4 +91,4 @@ class Nav extends HTMLElement {
   }
 }
 
-customElements.define('hoot-nav', Nav)
+customElements.define('metric-nav', Nav)

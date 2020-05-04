@@ -18,7 +18,7 @@ export default class CityElement extends HTMLElement {
 
   get city() {
     if (!this._city) {
-      this._city = document.querySelector('hoot-city')
+      this._city = document.querySelector('metric-city')
     }
     return this._city
   }

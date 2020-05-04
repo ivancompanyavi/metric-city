@@ -18,4 +18,4 @@ class Content extends HTMLElement {
   }
 }
 
-customElements.define('hoot-content', Content)
+customElements.define('metric-content', Content)

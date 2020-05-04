@@ -54,7 +54,7 @@ export default class LayerElement extends CityElement {
   _getClosestLayer() {
     let elem = this
     for (; elem && elem !== document; elem = elem.parentNode) {
-      if (elem.matches('hoot-layer')) return elem
+      if (elem.matches('metric-layer')) return elem
     }
   }
 

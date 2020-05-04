@@ -18,4 +18,4 @@ export default class HootHouse extends LayerElement {
   }
 }
 
-customElements.define('hoot-house', HootHouse)
+customElements.define('metric-house', HootHouse)

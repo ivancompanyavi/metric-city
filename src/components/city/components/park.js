@@ -14,4 +14,4 @@ export default class HootPark extends LayerElement {
   }
 }
 
-customElements.define('hoot-park', HootPark)
+customElements.define('metric-park', HootPark)

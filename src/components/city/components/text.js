@@ -15,4 +15,4 @@ export default class HootTextTile extends LayerElement {
   }
 }
 
-customElements.define('hoot-text', HootTextTile)
+customElements.define('metric-text', HootTextTile)

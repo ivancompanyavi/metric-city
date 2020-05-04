@@ -19,4 +19,4 @@ export default class HootTileMap extends LayerElement {
   }
 }
 
-customElements.define('hoot-tile-map', HootTileMap)
+customElements.define('metric-tile-map', HootTileMap)

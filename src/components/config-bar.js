@@ -1,6 +1,6 @@
 const template = /*html*/ `
   <style>
-    hoot-config-bar {
+    metric-config-bar {
       position: absolute;
       right: 0;
       height: 100%;
@@ -78,4 +78,4 @@ class ConfigBar extends HTMLElement {
   }
 }
 
-customElements.define('hoot-config-bar', ConfigBar)
+customElements.define('metric-config-bar', ConfigBar)
