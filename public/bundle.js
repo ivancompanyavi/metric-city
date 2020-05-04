@@ -91,7 +91,6 @@ class CityElement extends HTMLElement {
   constructor() {
     super();
     this._city = null;
-    this._configBar = null;
   }
 
   getAttr(key, defaultValue) {
@@ -107,13 +106,6 @@ class CityElement extends HTMLElement {
       this._city = document.querySelector('hoot-city');
     }
     return this._city
-  }
-
-  get configBar() {
-    if (!this._configBar) {
-      this._configBar = document.querySelector('hoot-config-bar');
-    }
-    return this._configBar
   }
 
   get width() {
@@ -245,7 +237,6 @@ class LayerElement extends CityElement {
       point: this.isometricToCartesian(drawable.isoPos),
     });
     const coords = s.draw(drawable.data);
-    this.setAttribute('id', drawable.id);
     this.drawHitGraph(drawable);
     return coords
   }
@@ -261,9 +252,10 @@ class LayerElement extends CityElement {
     });
     const color = getRandomColor();
     drawable.data.color = color;
+    this.dataset._hitcolor = color;
     drawable.data.id = this.getAttribute('id');
     hitGraphDrawable.drawHitGraph(drawable.data);
-    this.elements.push(drawable);
+    this.elements.push(this);
   }
 
   getShape() {
@@ -1013,7 +1005,7 @@ class Layer extends CityElement {
     const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
       pixel[1],
     )}${this.componentToHex(pixel[2])}`;
-    return this.elements.find(e => e.data.color === color.toUpperCase())
+    return this.elements.find(e => e.dataset._hitcolor === color.toUpperCase())
   }
 
   componentToHex(c) {
@@ -1106,7 +1098,8 @@ const template$2 = /*html*/ `
     }
   </style>
   <aside>
-
+    <form>
+    </form>
   </aside>
 `;
 
@@ -1114,16 +1107,59 @@ class ConfigBar extends HTMLElement {
   constructor() {
     super();
     this.initListeners();
+    this.inputs = [];
+    this.selectedElement = null;
   }
 
   initListeners() {
     document.addEventListener('city-element-clicked', evt => {
-      const city = document.querySelector('hoot-city');
-      city.width = 50;
-      city.height = 25;
-      const updatedCity = new Event('city-updated');
-      document.dispatchEvent(updatedCity);
+      this.selectedElement = event.detail.element;
+      this.inputs = this.renderInputs(event.detail.element);
+      this.render();
     });
+  }
+
+  renderInputs(element) {
+    const inputs = [];
+    Object.keys(element.dataset).forEach(field => {
+      if (!field.startsWith('_')) {
+        inputs.push([field, element.dataset[field]]);
+      }
+    });
+    return inputs
+  }
+
+  render() {
+    const form = this.querySelector('form');
+    this.inputs.forEach(field => {
+      form.insertAdjacentHTML(
+        'beforeend',
+        /*html*/ `
+      <div class="fieldset">
+        <label for="${field[0]}">${field[0]}<label>
+        <input type="text" name="${field[0]}" value="${field[1]}" />
+      </div>
+      `,
+      );
+    });
+    this.addInputListeners();
+  }
+
+  addInputListeners() {
+    const inputs = this.querySelectorAll('input');
+    console.log(inputs);
+    inputs.forEach(input => {
+      input.addEventListener('change', evt => {
+        const key = evt.target.name;
+        const value = evt.target.value;
+        this.selectedElement.dataset[key] = value;
+        this.updateCity();
+      });
+    });
+  }
+
+  updateCity() {
+    document.dispatchEvent(new Event('city-updated'));
   }
 
   connectedCallback() {

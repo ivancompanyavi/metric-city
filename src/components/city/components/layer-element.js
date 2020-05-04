@@ -87,7 +87,6 @@ export default class LayerElement extends CityElement {
       point: this.isometricToCartesian(drawable.isoPos),
     })
     const coords = s.draw(drawable.data)
-    this.setAttribute('id', drawable.id)
     this.drawHitGraph(drawable)
     return coords
   }
@@ -103,9 +102,10 @@ export default class LayerElement extends CityElement {
     })
     const color = getRandomColor()
     drawable.data.color = color
+    this.dataset._hitcolor = color
     drawable.data.id = this.getAttribute('id')
     hitGraphDrawable.drawHitGraph(drawable.data)
-    this.elements.push(drawable)
+    this.elements.push(this)
   }
 
   getShape() {

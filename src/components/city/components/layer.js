@@ -89,7 +89,7 @@ export default class Layer extends CityElement {
     const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
       pixel[1],
     )}${this.componentToHex(pixel[2])}`
-    return this.elements.find(e => e.data.color === color.toUpperCase())
+    return this.elements.find(e => e.dataset._hitcolor === color.toUpperCase())
   }
 
   componentToHex(c) {
