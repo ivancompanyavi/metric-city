@@ -1,9 +1,9 @@
 const template = /*html*/ `
 <style>
-    metric-element-form {
+    div {
         display: none;
     }
-    metric-element-form.shown {
+    div.shown {
       display: block;
     }
     .fieldset {
@@ -30,15 +30,10 @@ const template = /*html*/ `
       margin-bottom: 20px;
     }
 </style>
-<h3>Element settings</h3>
-<form></form>
-`
-
-const inputTpl = (key, value) => /*html*/ `
-  <div class="fieldset">
-    <input type="text" name="${key}" value="${value}" />
-    <label for="${key}">${key}<label>
-  </div>
+<div>
+  <h3>Element settings</h3>
+  <form></form>
+</div>
 `
 
 class ElementForm extends HTMLElement {
@@ -73,47 +68,39 @@ class ElementForm extends HTMLElement {
   }
 
   clearForm() {
-    const form = this.querySelector('form')
-    console.log(form)
+    const form = this.shadowRoot.querySelector('form')
     while (form.firstChild) {
       form.removeChild(form.firstChild)
     }
   }
 
   show() {
-    this.setAttribute('class', 'shown')
+    this.shadowRoot.querySelector('div').setAttribute('class', 'shown')
   }
 
   hide() {
-    this.removeAttribute('class')
+    this.shadowRoot.querySelector('div').removeAttribute('class')
+  }
+
+  renderField(key, value) {
+    const form = this.shadowRoot.querySelector('form')
+    const elm = document.createElement('metric-form-field')
+    elm.setAttribute('key', key)
+    elm.setAttribute('value', value)
+    elm.element = this.element
+    form.insertAdjacentElement('beforeend', elm)
   }
 
   render() {
     const fieldset = this.buildInputMap()
-    const form = this.querySelector('form')
     fieldset.forEach(field => {
-      form.insertAdjacentHTML('beforeend', inputTpl(...field))
+      this.renderField(...field)
     })
-    this.addInputListeners()
-  }
-
-  addInputListeners() {
-    const inputs = this.querySelectorAll('input')
-    inputs.forEach(input => {
-      input.addEventListener('change', evt => {
-        const { name, value } = evt.target
-        this.element.dataset[name] = value
-        this.updateCity()
-      })
-    })
-  }
-
-  updateCity() {
-    document.dispatchEvent(new Event('city-updated'))
   }
 
   connectedCallback() {
-    this.innerHTML = template
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = template
   }
 }
 
