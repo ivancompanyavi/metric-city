@@ -13,11 +13,12 @@
 body {
   display: grid;
   grid-template-areas:
-    'nav header'
+    'header header'
     'nav content';
   grid-template-rows: 60px 1fr;
   grid-template-columns: 100px 1fr;
   background-color: var(--color-grey-darker);
+  overflow-x: hidden;
 }
 
 html,

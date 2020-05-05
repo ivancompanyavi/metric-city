@@ -59,15 +59,13 @@ export default class Layer extends CityElement {
   initListeners() {
     document.addEventListener('city-click', evt => {
       const element = this.getClickedElement(evt)
-      if (element) {
-        const event = new CustomEvent('city-element-clicked', {
-          detail: {
-            element,
-            layerId: this.layerId,
-          },
-        })
-        document.dispatchEvent(event)
-      }
+      const event = new CustomEvent('city-element-clicked', {
+        detail: {
+          element,
+          layerId: this.layerId,
+        },
+      })
+      document.dispatchEvent(event)
     })
 
     document.addEventListener('city-updated', () => {

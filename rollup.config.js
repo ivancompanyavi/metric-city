@@ -2,6 +2,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import css from 'rollup-plugin-css-only'
 import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
+import { terser } from 'rollup-plugin-terser'
 
 const devEnv = process.env.ROLLUP_WATCH === 'true'
 
@@ -16,5 +17,6 @@ module.exports = {
     css({ output: 'public/bundle.css' }),
     devEnv && serve('public'),
     devEnv && livereload('public'),
+    !devEnv && terser(),
   ],
 }
