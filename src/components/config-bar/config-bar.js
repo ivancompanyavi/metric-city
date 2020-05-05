@@ -13,8 +13,8 @@ const template = /*html*/ `
 
   </style>
   <aside>
-    <metric-city-form></metric-city-form>
-    <metric-element-form></metric-element-form>
+    <metric-form-city></metric-form-city>
+    <metric-form-element></metric-form-element>
   </aside>
 `
 
@@ -22,7 +22,7 @@ class ConfigBar extends HTMLElement {
   initListeners() {
     document.addEventListener('city-element-clicked', event => {
       const { element } = event.detail
-      const elementForm = this.querySelector('metric-element-form')
+      const elementForm = this.querySelector('metric-form-element')
       elementForm.element = element
     })
   }

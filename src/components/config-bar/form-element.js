@@ -19,10 +19,10 @@ const template = /*html*/ `
 </div>
 `
 
-class ElementForm extends HTMLElement {
+class FormElement extends HTMLElement {
   constructor() {
     super()
-    this._element = []
+    this._element = null
   }
 
   set element(elem) {
@@ -87,4 +87,4 @@ class ElementForm extends HTMLElement {
   }
 }
 
-customElements.define('metric-element-form', ElementForm)
+customElements.define('metric-form-element', FormElement)
