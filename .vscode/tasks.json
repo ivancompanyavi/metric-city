@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Starting up http-server.+",
+          "endsPattern": "^Hit CTRL.+"
+        }
+      },
+      "label": "npm: start",
+      "detail": "http-server",
+      "isBackground": true
+    }
+  ]
+}

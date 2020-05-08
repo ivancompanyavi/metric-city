@@ -1,6 +1,6 @@
-import LayerElement from './layer-element'
-import { House } from '../models'
-import { getRandomColor } from '../models'
+import LayerElement from './layer-element.js'
+import { House } from '../models/index.js'
+import { getRandomColor } from '../models/index.js'
 
 export default class HootHouse extends LayerElement {
   getData() {

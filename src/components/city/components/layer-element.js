@@ -1,5 +1,5 @@
-import CityElement from './city-element'
-import { getRandomColor } from '../models/utils'
+import CityElement from './city-element.js'
+import { getRandomColor } from '../models/utils.js'
 
 export class DrawableElement {
   constructor(ctx, isoPos, shape, data) {

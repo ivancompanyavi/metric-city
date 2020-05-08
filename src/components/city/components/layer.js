@@ -1,5 +1,5 @@
-import CityElement from './city-element'
-import { layerCounter } from '../models'
+import CityElement from './city-element.js'
+import { layerCounter } from '../models/index.js'
 
 const SIDEBAR_WIDTH = 100
 const HEADER_HEIGHT = 60

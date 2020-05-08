@@ -1,4 +1,4 @@
-import { Shape, Dimension2D, Rect } from '../base'
+import { Shape, Dimension2D, Rect } from '../base/index.js'
 
 const ROAD_WIDTH = 1
 

@@ -1,5 +1,5 @@
-import Building from './building'
-import { Rect } from '../base'
+import Building from './building.js'
+import { Rect } from '../base/index.js'
 
 export default class TileMap extends Building {
   drawHitGraph(data) {

@@ -1,5 +1,5 @@
-import Shape from './shape'
-import Point from './point'
+import Shape from './shape.js'
+import Point from './point.js'
 
 const STROKE_COLOR = '#333333'
 

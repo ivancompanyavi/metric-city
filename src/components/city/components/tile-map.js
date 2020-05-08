@@ -1,5 +1,5 @@
-import LayerElement from './layer-element'
-import { TileMap } from '../models'
+import LayerElement from './layer-element.js'
+import { TileMap } from '../models/index.js'
 
 export default class HootTileMap extends LayerElement {
   get color() {

@@ -1,6 +1,6 @@
-import Shape from './shape'
-import Rect from './rect'
-import { Dimension2D } from './dimension'
+import Shape from './shape.js'
+import Rect from './rect.js'
+import { Dimension2D } from './dimension.js'
 
 export default class Cube extends Shape {
   draw({ w, h, d, strokeColor, color = '#000000', point = this.point }) {

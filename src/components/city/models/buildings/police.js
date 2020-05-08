@@ -1,6 +1,6 @@
-import { Rect, Cube, Dimension3D, Dimension2D } from '../base'
+import { Rect, Cube, Dimension3D, Dimension2D } from '../base/index.js'
 
-import Building from './building'
+import Building from './building.js'
 
 export default class Police extends Building {
   drawHitGraph(data) {

@@ -6,6 +6,11 @@ const template = /*html*/ `
       border-bottom: 1px solid var(--color-silver);
       margin-bottom: 20px;
     }
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 10px;
+    }
 </style>
 <div>
   <h3>City settings</h3>

@@ -1,5 +1,5 @@
-import { Cube, Point, Dimension3D } from '../base'
-import Building from './building'
+import { Cube, Point, Dimension3D } from '../base/index.js'
+import Building from './building.js'
 
 const COLOR = '#7cfc00'
 

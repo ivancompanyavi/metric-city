@@ -1,26 +1,22 @@
 const template = (key, value) => /*html*/ `
 <style>
   div {
-    display: flex;
-    border: 1px solid var(--color-silver);
-    border-radius: 5px;
     color: var(--color-silver);
-    margin-bottom: 15px;
     padding: 10px;
   }
   input {
-    border: 0;
-    flex: 1;
+    border: 1px solid var(--color-silver);
+    border-radius: 5px;
     background-color: var(--color-grey);
     color: var(--color-silver);
-  }
-  label {
-    flex: 0;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
   }
 </style>
 <div>
+  <label for="${key}">${key}</label>
   <input type="text" name="${key}" value="${value}" />
-  <label for="${key}">${key}<label>
 </div>
 `
 

@@ -1,4 +1,4 @@
-import Shape from './shape'
+import Shape from './shape.js'
 
 export default class TextTile extends Shape {
   draw({ text = '', textColor = 'white', font = '20px Arial' }) {

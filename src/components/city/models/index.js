@@ -1,5 +1,4 @@
-import Cube from './base/cube'
-import { Rect, TextTile } from './base'
+import { Cube, Rect, TextTile } from './base/index.js'
 import {
   BuildingFactory,
   FireStation,
@@ -8,9 +7,9 @@ import {
   Park,
   Police,
   TileMap,
-} from './buildings'
-import { Road } from './misc'
-import { getRandomColor, layerCounter } from './utils'
+} from './buildings/index.js'
+import { Road } from './misc/index.js'
+import { getRandomColor, layerCounter } from './utils.js'
 
 export {
   BuildingFactory,

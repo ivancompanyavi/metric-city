@@ -1,4 +1,4 @@
-import './form-field'
-import './form-element'
-import './form-city'
-import './config-bar'
+import './form-field.js'
+import './form-element.js'
+import './form-city.js'
+import './config-bar.js'

@@ -9,6 +9,7 @@ const template = /*html*/ `
       background: var(--color-grey);
       color: var(--color-white);
       padding-top: 20px;
+      box-sizing: border-box;
     }
 
   </style>

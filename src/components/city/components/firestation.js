@@ -1,5 +1,5 @@
-import LayerElement from './layer-element'
-import { FireStation } from '../models'
+import LayerElement from './layer-element.js'
+import { FireStation } from '../models/index.js'
 
 export default class HootFireStation extends LayerElement {
   getData() {

@@ -1,6 +1,6 @@
-import { Rect, Cube, Point, Dimension3D, Dimension2D } from '../base'
+import { Rect, Cube, Point, Dimension3D, Dimension2D } from '../base/index.js'
 
-import Building from './building'
+import Building from './building.js'
 
 export default class Hospital extends Building {
   drawHitGraph(data) {

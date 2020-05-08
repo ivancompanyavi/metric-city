@@ -1,6 +1,5 @@
-import Building from './building'
-import Rect from '../base/rect'
-import Cube from '../base/cube'
+import Building from './building.js'
+import { Rect, Cube } from '../base/index.js'
 
 export default class FireStation extends Building {
   drawHitGraph(data) {

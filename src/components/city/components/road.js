@@ -1,5 +1,5 @@
-import LayerElement from './layer-element'
-import { Road } from '../models'
+import LayerElement from './layer-element.js'
+import { Road } from '../models/index.js'
 
 export default class HootRoad extends LayerElement {
   getData() {

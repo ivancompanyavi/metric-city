@@ -1,4 +1,4 @@
-import Shape from '../base/shape'
+import { Shape } from '../base/index.js'
 
 const percentColors = [
   { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },

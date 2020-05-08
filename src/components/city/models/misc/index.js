@@ -1,4 +1,4 @@
-import Termometer from "./termometer";
-import Road from "./road";
+import Termometer from './termometer.js'
+import Road from './road.js'
 
-export { Road, Termometer };
+export { Road, Termometer }

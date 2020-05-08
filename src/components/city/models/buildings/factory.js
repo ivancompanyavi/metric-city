@@ -1,9 +1,9 @@
-import FireStation from './firestation'
-import Hospital from './hospital'
-import House from './house'
-import Park from './park'
-import Police from './police'
-import { Road } from '../misc'
+import FireStation from './firestation.js'
+import Hospital from './hospital.js'
+import House from './house.js'
+import Park from './park.js'
+import Police from './police.js'
+import { Road } from '../misc/index.js'
 
 export default class buildingFactory {
   static getInstance(name) {
