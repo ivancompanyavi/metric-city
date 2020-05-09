@@ -1,12 +1,16 @@
 const template = /*html*/ `
 <div>
-  <section component="<city-creator></city-creator>"></section>
-  <section default component="<city-viewer></city-viewer>"></section>
+  <section path="/create" component="<city-creator></city-creator>"></section>
+  <section path="/view" default component="<city-viewer></city-viewer>"></section>
   <div id="route-content"></div>
 </div>
 `
 
-class Router extends HTMLElement {
+class RouterElement extends HTMLElement {
+  constructor() {
+    super()
+    this.initListeners()
+  }
   get routePlaceholder() {
     return this.querySelector('#route-content')
   }
@@ -15,12 +19,25 @@ class Router extends HTMLElement {
     return this.querySelector('section[default]')
   }
 
+  initListeners() {
+    document.addEventListener('router-change', evt => {
+      console.log(evt.detail)
+
+      if (evt.detail.url) {
+        const component = this.querySelector(
+          `section[path="${evt.detail.url}"]`,
+        ).getAttribute('component')
+        console.log(component)
+        this.processRoute(component)
+      }
+    })
+  }
+
   init() {
     this.processRoute(this.defaultRoute.getAttribute('component'))
   }
 
   processRoute(component) {
-    console.log(component)
     const domComponent = this.getDOMComponent(component)
     this.clearPreviousRoute()
     this.routePlaceholder.appendChild(domComponent)
@@ -43,4 +60,4 @@ class Router extends HTMLElement {
   }
 }
 
-customElements.define('metric-router', Router)
+customElements.define('metric-router', RouterElement)
