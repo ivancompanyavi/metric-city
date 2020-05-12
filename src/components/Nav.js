@@ -28,28 +28,7 @@ const template = `<style>
     color: var(--color-white);
   }
 
-  a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 10px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 12px;
-    color: var(--color-grey-lighter);
-  }
-
-  a:hover {
-    font-weight: bold;
-  }
-
-  a[selected="true"] {
-    background-color: var(--color-grey-lighter);
-    color: var(--color-white);
-  }
-
-  a[selected="true"] i {
+  metric-route-link[selected="true"] i {
     color: var(--color-white);
   }
   i {
@@ -82,8 +61,8 @@ class Nav extends HTMLElement {
 
   selectLink() {
     const url = new URL(window.location.href)
-    this.querySelectorAll('a').forEach(link => {
-      if (link.getAttribute('href') === url.pathname) {
+    this.querySelectorAll('metric-route-link').forEach(link => {
+      if (link.getAttribute('path') === url.pathname) {
         link.setAttribute('selected', true)
       }
     })

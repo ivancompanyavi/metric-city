@@ -4,8 +4,9 @@ const template = /*html*/ `
     color: var(--color-white);
   }
 :host {
-    grid-area: content;
-    position: relative;
+  display: grid;
+  grid-area: content;
+  position: relative;
 }
 </style>
 <slot></slot>

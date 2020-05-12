@@ -1,7 +1,7 @@
 const template = /*html*/ `
 <div>
-  <section path="/create" component="<city-creator></city-creator>"></section>
-  <section path="/view" default component="<city-viewer></city-viewer>"></section>
+  <section path="/create" component="<city-create></city-create>"></section>
+  <section path="/view" default component="<city-view></city-view>"></section>
   <div id="route-content"></div>
 </div>
 `
@@ -19,22 +19,24 @@ class RouterElement extends HTMLElement {
     return this.querySelector('section[default]')
   }
 
+  getStringComponent(url) {
+    const section =
+      this.querySelector(`section[path="${url}"]`) || this.defaultRoute
+    return section.getAttribute('component')
+  }
+
   initListeners() {
     document.addEventListener('router-change', evt => {
-      console.log(evt.detail)
-
       if (evt.detail.url) {
-        const component = this.querySelector(
-          `section[path="${evt.detail.url}"]`,
-        ).getAttribute('component')
-        console.log(component)
+        const component = this.getStringComponent(evt.detail.url)
         this.processRoute(component)
       }
     })
   }
 
   init() {
-    this.processRoute(this.defaultRoute.getAttribute('component'))
+    const url = new URL(location.href)
+    this.processRoute(this.getStringComponent(url.pathname))
   }
 
   processRoute(component) {

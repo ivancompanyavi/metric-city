@@ -14,9 +14,7 @@ const template = `
 </style>
 <metric-header></metric-header>
 <metric-nav></metric-nav>
-<metric-content>
-  <metric-router></metric-router>
-</metric-content>
+<metric-router></metric-router>
 `
 
 class App extends HTMLElement {
