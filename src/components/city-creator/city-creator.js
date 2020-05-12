@@ -14,10 +14,10 @@ const template = `
 <metric-config-bar></metric-config-bar>
 `
 
-class CityCreate extends HTMLElement {
+class CityCreator extends HTMLElement {
   connectedCallback() {
     this.innerHTML = template
   }
 }
 
-customElements.define('city-create', CityCreate)
+customElements.define('city-creator', CityCreator)
