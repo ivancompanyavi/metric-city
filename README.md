@@ -1,4 +1,4 @@
-# metric-city [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Dependencies](https://david-dm.org/ivancompanyavi/metric-city.svg)
+# metric-city [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Metric City allows you to display metrics on a clean and accessible way using a city as template for it. This UI will provide you a generic engine where you can render any kind of metric
 
