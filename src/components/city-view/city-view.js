@@ -5,6 +5,7 @@ const map = `
   </metric-layer>
   <metric-layer id="buildings">
     <metric-house data-x="10" data-y="29" data-pct="0.4"></metric-house>
+    <metric-stacked-house data-x="15" data-y="20" data-pct="0.4"></metric-stacked-house>
     <metric-text data-x="15" data-y="29" data-text="hello"></metric-text>
     <metric-road data-x="0" data-y="29" data-length="5"></metric-road>
     <metric-road
