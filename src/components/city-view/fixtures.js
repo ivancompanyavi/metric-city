@@ -18,7 +18,7 @@ export default {
         { type: 'text', x: 15, y: 32, text: 'Hello world' },
         { type: 'road', x: 0, y: 29, direction: 'right' },
         { type: 'road', x: 0, y: 39, length: 5, direction: 'left' },
-        { type: 'fire-station', x: 18, y: 8, length: 5 },
+        { type: 'fire-station', x: 18, y: 8 },
         { type: 'hospital', x: 0, y: 8 },
         { type: 'park', x: 0, y: 15 },
         { type: 'stacked-house', x: 15, y: 20, pct: 0.5 },

@@ -1,3 +1,5 @@
+import cityJson from './fixtures.js'
+import { cityParser } from '../models.js'
 const map = `
 <metric-content>
   <metric-layer id="map">
@@ -32,7 +34,10 @@ const template = `
 
 class CityView extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = template
+    // this.innerHTML = template
+    const content = cityParser(cityJson)
+    console.log(content)
+    this.appendChild(content)
   }
 }
 
