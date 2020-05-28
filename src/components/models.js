@@ -13,7 +13,9 @@ class Parser {
   getAttributes() {
     let result = ''
     for (let [key, value] of Object.entries(this.data)) {
-      result += `data-${key}="${value}" `
+      if (value !== null) {
+        result += `data-${key}="${value}" `
+      }
     }
     return result
   }
@@ -88,7 +90,7 @@ class RoadParser extends Parser {
       id: json.id || '',
       x: json.x || 0,
       y: json.y || 0,
-      length: json.length || 0,
+      length: json.length || null,
       direction: json.direction || '',
     }
   }
@@ -163,7 +165,6 @@ class ParserFactory {
 }
 export function cityParser(json) {
   const componentString = ParserFactory.getInstance(json).parse()
-  console.log(componentString)
   return new DOMParser().parseFromString(componentString, 'text/html').body
     .firstChild
 }
