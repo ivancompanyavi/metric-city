@@ -13,17 +13,9 @@ const map = `
       data-length="5"
       data-direction="left"
     ></metric-road>
-    <metric-fire-station
-      data-x="18"
-      data-y="8"
-      data-length="5"
-    ></metric-fire-station>
-    <metric-hospital
-      data-x="0"
-      data-y="8"
-      data-length="5"
-    ></metric-hospital>
-    <metric-park data-x="0" data-y="15" data-length="5"></metric-park>
+    <metric-fire-station data-x="18" data-y="8"></metric-fire-station>
+    <metric-hospital data-x="0" data-y="8"></metric-hospital>
+    <metric-park data-x="0" data-y="15"></metric-park>
     <metric-stacked-house data-x="15" data-y="20" data-pct="0.5"></metric-stacked-house>
     </metric-layer>
 </metric-content>`
