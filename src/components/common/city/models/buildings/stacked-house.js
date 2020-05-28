@@ -15,14 +15,19 @@ const STORY_HEIGHT = STORY_WINDOW_HEIGHT + STORY_FLOOR_HEIGHT
 
 export default class StackedHouse extends Building {
   drawHitGraph(data) {
-    const { w, t, h, pct, color } = data
-    const tall = pct === 0.0 ? 0 : t
+    const { height } = this
+    const { pct, color } = data
+    const tall = Math.floor(pct * 10) * STORY_HEIGHT
     const cube = new Cube(this)
+    const pointOffset = (PERIMETER_SIZE - BUILDING_SIZE) / 2
     return cube.draw({
-      ...new Dimension3D(w, tall, h),
+      ...new Dimension3D(BUILDING_SIZE, tall, BUILDING_SIZE),
       color,
-      point,
       strokeColor: color,
+      point: {
+        x: this.point.x,
+        y: this.point.y - height * pointOffset,
+      },
     })
   }
 
@@ -91,7 +96,6 @@ export default class StackedHouse extends Building {
   }
 
   _drawCeiling(lastFloor) {
-    console.log(lastFloor)
     const point = lastFloor[2][0]
     const cube = new Cube({
       ...this,

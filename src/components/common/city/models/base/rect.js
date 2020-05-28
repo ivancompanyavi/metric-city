@@ -76,9 +76,9 @@ export default class Rect extends Shape {
     this.ctx.lineTo(points[1].x, points[1].y)
     this.ctx.lineTo(points[2].x, points[2].y)
     this.ctx.lineTo(points[3].x, points[3].y)
-
     this.ctx.fillStyle = color
     this.ctx.strokeStyle = strokeColor
+
     this.ctx.stroke()
     this.ctx.fill()
     return points
