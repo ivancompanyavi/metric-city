@@ -10,7 +10,7 @@ const template = `
       position: absolute;
     }
     #hitgraph {
-      opacity: 0;
+      opacity: 1;
     }
   </style>
   <canvas id="layer"></canvas>
@@ -87,6 +87,10 @@ export default class Layer extends CityElement {
     const color = `#${this.componentToHex(pixel[0])}${this.componentToHex(
       pixel[1],
     )}${this.componentToHex(pixel[2])}`
+    console.log(color)
+    for (let el of this.elements) {
+      console.log(`${el.localName} -> ${el.dataset._hitcolor}`)
+    }
     return this.elements.find(e => e.dataset._hitcolor === color.toUpperCase())
   }
 

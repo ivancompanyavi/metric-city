@@ -1,3 +1,5 @@
-import './common/index.js'
-import './city-creator/index.js'
-import './city-view/index.js'
+import './city/index.js'
+import './router/index.js'
+import './nav.js'
+import './content.js'
+import './header.js'
