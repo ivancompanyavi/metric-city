@@ -10,7 +10,7 @@ const template = `
       position: absolute;
     }
     #hitgraph {
-      opacity: 1;
+      opacity: 0;
     }
   </style>
   <canvas id="layer"></canvas>
