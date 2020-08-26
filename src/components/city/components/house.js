@@ -2,7 +2,7 @@ import LayerElement from './layer-element.js'
 import { House } from '../models/index.js'
 import { getRandomColor } from '../models/index.js'
 
-export default class HootHouse extends LayerElement {
+export default class MetricHouse extends LayerElement {
   getData() {
     return {
       pct: this.getAttr('pct', 0.0),
@@ -18,4 +18,4 @@ export default class HootHouse extends LayerElement {
   }
 }
 
-customElements.define('metric-house', HootHouse)
+customElements.define('metric-house', MetricHouse)

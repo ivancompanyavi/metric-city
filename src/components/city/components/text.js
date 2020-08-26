@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { TextTile } from '../models/index.js'
 
-export default class HootTextTile extends LayerElement {
+export default class MetricText extends LayerElement {
   getData() {
     return {
       text: this.getAttr('text', ''),
@@ -15,4 +15,4 @@ export default class HootTextTile extends LayerElement {
   }
 }
 
-customElements.define('metric-text', HootTextTile)
+customElements.define('metric-text', MetricText)

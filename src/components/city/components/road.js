@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { Road } from '../models/index.js'
 
-export default class HootRoad extends LayerElement {
+export default class MetricRoad extends LayerElement {
   getData() {
     let defaultLength = this.city.columns
     const dir = this.getAttr('direction', 'right')
@@ -19,4 +19,4 @@ export default class HootRoad extends LayerElement {
   }
 }
 
-customElements.define('metric-road', HootRoad)
+customElements.define('metric-road', MetricRoad)

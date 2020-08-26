@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { Hospital } from '../models/index.js'
 
-export default class HootHospital extends LayerElement {
+export default class MetricHospital extends LayerElement {
   getData() {
     return {}
   }
@@ -11,4 +11,4 @@ export default class HootHospital extends LayerElement {
   }
 }
 
-customElements.define('metric-hospital', HootHospital)
+customElements.define('metric-hospital', MetricHospital)

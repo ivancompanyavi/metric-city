@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { TileMap } from '../models/index.js'
 
-export default class HootTileMap extends LayerElement {
+export default class MetricTileMap extends LayerElement {
   get color() {
     return this.dataset.color
   }
@@ -19,4 +19,4 @@ export default class HootTileMap extends LayerElement {
   }
 }
 
-customElements.define('metric-tile-map', HootTileMap)
+customElements.define('metric-tile-map', MetricTileMap)

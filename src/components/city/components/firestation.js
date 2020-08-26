@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { FireStation } from '../models/index.js'
 
-export default class HootFireStation extends LayerElement {
+export default class MetricFireStation extends LayerElement {
   getData() {
     return {}
   }
@@ -11,4 +11,4 @@ export default class HootFireStation extends LayerElement {
   }
 }
 
-customElements.define('metric-fire-station', HootFireStation)
+customElements.define('metric-fire-station', MetricFireStation)

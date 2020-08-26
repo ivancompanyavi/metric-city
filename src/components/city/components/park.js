@@ -1,7 +1,7 @@
 import LayerElement from './layer-element.js'
 import { Park } from '../models/index.js'
 
-export default class HootPark extends LayerElement {
+export default class MetricPark extends LayerElement {
   getData() {
     return {
       w: this.getAttr('w', 4),
@@ -14,4 +14,4 @@ export default class HootPark extends LayerElement {
   }
 }
 
-customElements.define('metric-park', HootPark)
+customElements.define('metric-park', MetricPark)
