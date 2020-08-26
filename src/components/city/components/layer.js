@@ -52,8 +52,14 @@ export default class Layer extends CityElement {
 
   initCanvas(canvasName) {
     const canvas = this.tpl.content.getElementById(canvasName)
-    canvas.setAttribute('width', this.width * this.rows + this.width * this.columns / 2)
-    canvas.setAttribute('height', this.height * this.columns + this.height * this.rows / 2)
+    canvas.setAttribute(
+      'width',
+      this.width * this.rows + (this.width * this.columns) / 2,
+    )
+    canvas.setAttribute(
+      'height',
+      this.height * this.columns + (this.height * this.rows) / 2,
+    )
   }
 
   initListeners() {
