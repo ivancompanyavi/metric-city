@@ -1,3 +1,5 @@
+import './normalize.css'
+import './App.css'
 import './components/index.js'
 import './views/index.js'
 import './app.js'

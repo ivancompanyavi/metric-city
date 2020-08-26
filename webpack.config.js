@@ -1,7 +1,6 @@
 var path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-var webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -9,7 +8,6 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: 'main.bundle.js',
   },
-  mode: 'production',
   module: {
     rules: [
       {
@@ -22,16 +20,18 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
     ],
   },
   stats: {
     colors: true,
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin(),
-    new CopyWebpackPlugin([
-      { from: './src/App.css', to: './App.css' },
-      { from: './src/normalize.css', to: './normalize.css' },
-    ]),
   ],
 }
