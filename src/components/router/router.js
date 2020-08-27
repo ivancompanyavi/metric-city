@@ -1,10 +1,4 @@
-const template = /*html*/ `
-<div>
-  <section path="/create" component="<city-creator></city-creator>"></section>
-  <section path="/view" default component="<city-view></city-view>"></section>
-  <div id="route-content"></div>
-</div>
-`
+import template from './router.html'
 
 class RouterElement extends HTMLElement {
   constructor() {

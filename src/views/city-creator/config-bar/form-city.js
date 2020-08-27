@@ -1,22 +1,4 @@
-const template = /*html*/ `
-<style>
-    h3 {
-      padding: 0 20px 20px 20px;
-      margin: 0;
-      border-bottom: 1px solid var(--color-silver);
-      margin-bottom: 20px;
-    }
-    form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 10px;
-    }
-</style>
-<div>
-  <h3>City settings</h3>
-  <form></form>
-</div>
-`
+import template from './form-city.html'
 
 class FormCity extends HTMLElement {
   constructor() {

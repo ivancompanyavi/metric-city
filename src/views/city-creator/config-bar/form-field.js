@@ -1,24 +1,4 @@
-const template = (key, value) => /*html*/ `
-<style>
-  div {
-    color: var(--color-silver);
-    padding: 10px;
-  }
-  input {
-    border: 1px solid var(--color-silver);
-    border-radius: 5px;
-    background-color: var(--color-grey);
-    color: var(--color-silver);
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-  }
-</style>
-<div>
-  <label for="${key}">${key}</label>
-  <input type="text" name="${key}" value="${value}" />
-</div>
-`
+import template from './form-field.html'
 
 class FormField extends HTMLElement {
   constructor() {
@@ -48,10 +28,15 @@ class FormField extends HTMLElement {
 
   connectedCallback() {
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.innerHTML = template(
-      this.getAttribute('key'),
-      this.getAttribute('value'),
-    )
+    const key = this.getAttribute('key')
+    const value = this.getAttribute('value')
+    this.shadowRoot.innerHTML = template
+    const label = this.shadowRoot.querySelector('label')
+    const input = this.shadowRoot.querySelector('input')
+    label.setAttribute('for', key)
+    label.appendChild(document.createTextNode(key))
+    input.setAttribute('name', value)
+    input.setAttribute('value', value)
     this.addListeners()
   }
 }

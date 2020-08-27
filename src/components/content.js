@@ -1,16 +1,4 @@
-const template = /*html*/ `
-<style>
-  * {
-    color: var(--color-white);
-  }
-:host {
-  display: grid;
-  grid-area: content;
-  position: relative;
-}
-</style>
-<slot></slot>
-`
+import template from './content.html'
 
 class Content extends HTMLElement {
   connectedCallback() {

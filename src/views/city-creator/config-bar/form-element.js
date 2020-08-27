@@ -1,28 +1,4 @@
-const template = /*html*/ `
-<style>
-    div {
-        display: none;
-    }
-    div.shown {
-      display: block;
-    }
-    h3 {
-      padding: 0 20px 20px 20px;
-      margin: 0;
-      border-bottom: 1px solid var(--color-silver);
-      margin-bottom: 20px;
-    }
-    form {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 10px;
-    }
-</style>
-<div>
-  <h3>Element settings</h3>
-  <form></form>
-</div>
-`
+import template from './form-element.html'
 
 class FormElement extends HTMLElement {
   constructor() {

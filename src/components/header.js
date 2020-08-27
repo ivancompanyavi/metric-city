@@ -1,15 +1,4 @@
-const template = /*html*/ `
-<style>
-    :host {
-        grid-area: header;
-        background-color: var(--color-black);
-        color: var(--color-white);
-    }
-</style>
-<head>
-    <h2>Metric system<h2>
-</head>
-`
+import template from './header.html'
 class Header extends HTMLElement {
   connectedCallback() {
     this.attachShadow({ mode: 'open' })

@@ -1,21 +1,9 @@
+import template from './layer.html'
 import CityElement from './city-element.js'
 import { layerCounter } from '../models/index.js'
 
 const SIDEBAR_WIDTH = 100
 const HEADER_HEIGHT = 60
-
-const template = `
-  <style>
-    canvas {
-      position: absolute;
-    }
-    #hitgraph {
-      opacity: 0;
-    }
-  </style>
-  <canvas id="layer"></canvas>
-  <canvas id="hitgraph"></canvas>
-`
 
 export default class Layer extends CityElement {
   constructor() {
