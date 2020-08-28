@@ -4,6 +4,9 @@ class FormField extends HTMLElement {
   constructor() {
     super()
     this._element = null
+    this.attachShadow({ mode: 'open' })
+    this.shadowRoot.innerHTML = template
+    this.addListeners()
   }
 
   set element(elm) {
@@ -27,17 +30,14 @@ class FormField extends HTMLElement {
   }
 
   connectedCallback() {
-    this.attachShadow({ mode: 'open' })
     const key = this.getAttribute('key')
     const value = this.getAttribute('value')
-    this.shadowRoot.innerHTML = template
     const label = this.shadowRoot.querySelector('label')
     const input = this.shadowRoot.querySelector('input')
     label.setAttribute('for', key)
     label.appendChild(document.createTextNode(key))
     input.setAttribute('name', key)
     input.setAttribute('value', value)
-    this.addListeners()
   }
 }
 

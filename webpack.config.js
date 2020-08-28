@@ -36,4 +36,9 @@ module.exports = {
     colors: true,
   },
   plugins: [new MiniCssExtractPlugin(), new HtmlWebpackPlugin()],
+  devServer: {
+    historyApiFallback: {
+      index: '/index.html',
+    },
+  },
 }

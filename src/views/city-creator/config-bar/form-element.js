@@ -4,6 +4,7 @@ class FormElement extends HTMLElement {
   constructor() {
     super()
     this._element = null
+    this.attachShadow({ mode: 'open' })
     this.configBar = document.querySelector('metric-config-bar > aside')
   }
 
@@ -33,10 +34,9 @@ class FormElement extends HTMLElement {
   }
 
   clearForm() {
-    const form = this.shadowRoot.querySelector('form')
-    if (form) {
-      while (form.firstChild) {
-        form.removeChild(form.firstChild)
+    if (this.form) {
+      while (this.form.firstChild) {
+        this.form.removeChild(this.form.firstChild)
       }
     }
   }
@@ -50,12 +50,11 @@ class FormElement extends HTMLElement {
   }
 
   renderField(key, value) {
-    const form = this.shadowRoot.querySelector('form')
     const elm = document.createElement('metric-form-field')
     elm.setAttribute('key', key)
     elm.setAttribute('value', value)
     elm.element = this.element
-    form.insertAdjacentElement('beforeend', elm)
+    this.form.insertAdjacentElement('beforeend', elm)
   }
 
   render() {
@@ -66,8 +65,8 @@ class FormElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this.attachShadow({ mode: 'open' })
     this.shadowRoot.innerHTML = template
+    this.form = this.shadowRoot.querySelector('form')
   }
 }
 
