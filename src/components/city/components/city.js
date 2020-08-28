@@ -64,7 +64,7 @@ export default class City extends HTMLElement {
       const layers = this.querySelectorAll('metric-layer')
       layerEventBuffer.push(evt.detail)
       if (layerEventBuffer.length === layers.length) {
-        console.log(this.processLayerEvents(layerEventBuffer))
+        // console.log(this.processLayerEvents(layerEventBuffer))
         layerEventBuffer = []
       }
     })

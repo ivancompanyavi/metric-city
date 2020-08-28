@@ -4,6 +4,7 @@ class FormElement extends HTMLElement {
   constructor() {
     super()
     this._element = null
+    this.configBar = document.querySelector('metric-config-bar > aside')
   }
 
   set element(elem) {
@@ -33,17 +34,19 @@ class FormElement extends HTMLElement {
 
   clearForm() {
     const form = this.shadowRoot.querySelector('form')
-    while (form.firstChild) {
-      form.removeChild(form.firstChild)
+    if (form) {
+      while (form.firstChild) {
+        form.removeChild(form.firstChild)
+      }
     }
   }
 
   show() {
-    this.shadowRoot.querySelector('div').setAttribute('class', 'shown')
+    this.configBar.setAttribute('class', 'shown')
   }
 
   hide() {
-    this.shadowRoot.querySelector('div').removeAttribute('class')
+    this.configBar.removeAttribute('class')
   }
 
   renderField(key, value) {

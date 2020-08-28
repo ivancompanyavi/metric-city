@@ -35,7 +35,7 @@ class FormField extends HTMLElement {
     const input = this.shadowRoot.querySelector('input')
     label.setAttribute('for', key)
     label.appendChild(document.createTextNode(key))
-    input.setAttribute('name', value)
+    input.setAttribute('name', key)
     input.setAttribute('value', value)
     this.addListeners()
   }

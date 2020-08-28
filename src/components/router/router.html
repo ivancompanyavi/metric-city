@@ -1,4 +1,13 @@
-<div>
+<style>
+  #router-wrapper {
+    height: 100%;
+  }
+  #route-content {
+    position: relative;
+    height: 100%;
+  }
+</style>
+<div id="router-wrapper">
   <section path="/create" component="<city-creator></city-creator>"></section>
   <section path="/view" default component="<city-view></city-view>"></section>
   <div id="route-content"></div>

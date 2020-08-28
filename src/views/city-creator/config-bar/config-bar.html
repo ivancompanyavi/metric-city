@@ -1,17 +1,18 @@
 <style>
-  metric-config-bar {
-    position: absolute;
+  aside {
+    display: none;
     height: calc(100vh - 60px);
-    right: 0;
-    top: 60px;
     width: 350px;
     background: var(--color-grey);
     color: var(--color-white);
     padding-top: 20px;
     box-sizing: border-box;
   }
+
+  aside.shown {
+    display: block;
+  }
 </style>
 <aside>
-  <metric-form-city></metric-form-city>
   <metric-form-element></metric-form-element>
 </aside>
